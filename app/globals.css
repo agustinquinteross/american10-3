@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-montserrat), sans-serif;
+  --font-script: var(--font-great-vibes), cursive;
+  
+  --color-gusto-bg: #FAF7F2;
+  --color-gusto-text: #4A3B32;
+}
+
+:root {
+  --foreground-rgb: 62, 39, 35; /* Marrón/Café #4A3B32 */
+  --background-start-rgb: 245, 241, 233; /* Crema #FAF7F2 */
+  --background-end-rgb: 250, 248, 245; /* Crema más claro */
+}
+
+@layer base {
+  body {
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
+      rgb(var(--background-start-rgb));
+    font-family: var(--font-montserrat), sans-serif;
+  }
+}
+
+@layer utilities {
+  /* Ocultar scrollbar en las categorías pero permitir scroll */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  /* Animaciones suaves */
+  .animate-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .title-script {
+    font-family: var(--font-script);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@layer components {
+  /* --- FONDO Y TEXTO BASE --- */
+  .gusto-body {
+    @apply min-h-screen bg-[#FAF7F2] text-[#4A3B32] font-sans;
+  }
+
+  /* --- TARJETAS --- */
+  .gusto-card {
+    @apply bg-white border border-[#4A3B32]/10 rounded-xl p-4 shadow-sm transition-all;
+  }
+  
+  .gusto-card-hover {
+    @apply hover:border-[#4A3B32]/30 hover:shadow-md hover:-translate-y-0.5;
+  }
+
+  /* --- TIPOGRAFÍA DE IMPACTO --- */
+  .gusto-title {
+    @apply font-serif italic tracking-tighter text-[#4A3B32];
+  }
+
+  .gusto-label {
+    @apply text-[10px] font-bold uppercase tracking-widest text-[#4A3B32]/70;
+  }
+
+  /* --- BOTONES --- */
+  .gusto-btn-primary {
+    @apply bg-[#4A3B32] hover:bg-black text-[#FAF7F2] font-bold text-xs uppercase tracking-widest px-5 py-2.5 rounded-lg transition-all shadow-md active:scale-95 border border-[#4A3B32];
+  }
+
+  .gusto-btn-secondary {
+    @apply bg-transparent border border-[#4A3B32]/30 hover:border-[#4A3B32] hover:bg-[#4A3B32]/5 text-[#4A3B32] font-bold text-xs uppercase px-4 py-2 rounded-lg transition-all;
+  }
+
+  /* --- INPUTS Y FORMULARIOS --- */
+  .gusto-input {
+    @apply w-full bg-white border border-[#4A3B32]/20 rounded-xl p-3 text-[#4A3B32] outline-none focus:border-[#4A3B32] transition-colors placeholder:text-[#4A3B32]/50;
+  }
+
+  /* --- CONTENEDORES DE SECCIÓN --- */
+  .gusto-section-header {
+    @apply p-3 border-b border-[#4A3B32]/10 bg-white/50 flex items-center justify-between rounded-t-xl;
+  }
+
+  /* --- BADGES (MÉTODOS DE PAGO/ENTREGA) --- */
+  .badge-delivery { @apply bg-[#4A3B32]/10 text-[#4A3B32] border border-[#4A3B32]/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase; }
+  .badge-pickup { @apply bg-amber-900/10 text-amber-800 border border-amber-900/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase; }
+  .badge-cash { @apply text-green-700 flex items-center gap-1; }
+  .badge-mp { @apply text-sky-600 flex items-center gap-1; }
+}
