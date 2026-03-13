@@ -108,59 +108,59 @@ export default function AdminProductForm({ productToEdit, onCancel, onSaved }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#FAF7F2]/80 backdrop-blur-sm">
-      <div className="bg-white w-full max-w-2xl max-h-[90vh] rounded-2xl border border-[#4A3B32]/10 shadow-2xl flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+      <div className="bg-[#1A1A1A] w-full max-w-2xl max-h-[90vh] rounded-2xl border border-white/10 shadow-2xl flex flex-col overflow-hidden">
         
-        <div className="flex justify-between items-center p-6 border-b border-[#4A3B32]/10 bg-white z-10">
-          <h2 className="text-xl font-bold text-[#4A3B32] uppercase italic">{productToEdit ? 'Editar Producto' : 'Nuevo Producto'}</h2>
-          <button type="button" onClick={onCancel} className="text-[#4A3B32]/70 hover:text-[#4A3B32]"><X /></button>
+        <div className="flex justify-between items-center p-6 border-b border-white/10 bg-[#1A1A1A] z-10">
+          <h2 className="text-xl font-bold text-white uppercase italic tracking-widest">{productToEdit ? 'Editar Producto' : 'Nuevo Producto'}</h2>
+          <button type="button" onClick={onCancel} className="text-white/70 hover:text-white transition-colors"><X /></button>
         </div>
 
         <div className="p-6 space-y-6 overflow-y-auto no-scrollbar flex-1">
             <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-[#4A3B32]/70 uppercase tracking-widest">Foto</label>
-                        <div className="relative overflow-hidden bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-xl aspect-square flex items-center justify-center group cursor-pointer hover:border-[#4A3B32]/40 transition">
-                            {imageUrl ? <img src={imageUrl} className="w-full h-full object-cover" alt="Preview" /> : <div className="text-[#4A3B32]/60 flex flex-col items-center">{uploading ? <Loader2 className="animate-spin mb-2"/> : <Upload size={32} className="mb-2"/>}<span className="text-xs font-bold uppercase">Subir Foto</span></div>}
+                        <label className="text-xs font-bold text-white/50 uppercase tracking-widest">Foto</label>
+                        <div className="relative overflow-hidden bg-black border border-white/20 rounded-xl aspect-square flex items-center justify-center group cursor-pointer hover:border-[#E31B23]/40 transition">
+                            {imageUrl ? <img src={imageUrl} className="w-full h-full object-cover" alt="Preview" /> : <div className="text-white/40 flex flex-col items-center">{uploading ? <Loader2 className="animate-spin mb-2"/> : <Upload size={32} className="mb-2"/>}<span className="text-xs font-bold uppercase">Subir Foto</span></div>}
                             <input type="file" accept="image/*" onChange={handleImageUpload} className="absolute inset-0 opacity-0 cursor-pointer" disabled={uploading} />
                         </div>
                     </div>
-                    <div className="space-y-2 pt-2 border-t border-[#4A3B32]/10/50">
+                    <div className="space-y-2 pt-2 border-t border-white/10">
                         <label className="text-xs font-bold text-green-500 uppercase flex items-center gap-1 tracking-widest"><Zap size={14}/> Etiquetas</label>
                         <div className="flex flex-wrap gap-1.5 mb-2">
                             {['NUEVO', 'VEGANO', 'SIN TACC', 'PICANTE'].map(tag => (
-                                <button key={tag} type="button" onClick={() => setPromoTags(p => p.includes(tag) ? p.filter(t => t !== tag) : [...p, tag])} className={`text-[9px] font-black px-2 py-1.5 rounded border transition-all ${promoTags.includes(tag) ? 'bg-green-600 text-[#4A3B32] border-green-600' : 'bg-[#FAF7F2] text-[#4A3B32]/60 border-[#4A3B32]/20 hover:border-[#4A3B32]/40'}`}>{tag}</button>
+                                <button key={tag} type="button" onClick={() => setPromoTags(p => p.includes(tag) ? p.filter(t => t !== tag) : [...p, tag])} className={`text-[9px] font-black px-2 py-1.5 rounded border transition-all ${promoTags.includes(tag) ? 'bg-green-600 text-white border-green-600' : 'bg-black text-white/40 border-white/20 hover:border-white/40'}`}>{tag}</button>
                             ))}
                         </div>
                         <div className="flex gap-2">
-                            <input type="text" placeholder="Agregar etiqueta..." value={customTag} onChange={e => setCustomTag(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), setPromoTags(p => [...new Set([...p, customTag.toUpperCase()])]), setCustomTag(''))} className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-lg p-2 text-[10px] text-[#4A3B32] outline-none focus:border-green-600" />
+                            <input type="text" placeholder="Agregar etiqueta..." value={customTag} onChange={e => setCustomTag(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), setPromoTags(p => [...new Set([...p, customTag.toUpperCase()])]), setCustomTag(''))} className="w-full bg-black border border-white/20 rounded-lg p-2 text-[10px] text-white outline-none focus:border-green-600" />
                         </div>
                     </div>
-                    <div className="space-y-2 pt-2 border-t border-[#4A3B32]/10/50">
+                    <div className="space-y-2 pt-2 border-t border-white/10">
                         <label className="text-xs font-bold text-yellow-500 uppercase flex items-center gap-1 tracking-widest"><Gift size={14}/> Vincular Promo</label>
-                        <select value={offerId} onChange={e => setOfferId(e.target.value)} className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-lg p-3 text-[#4A3B32] outline-none focus:border-yellow-500 text-xs font-bold">
+                        <select value={offerId} onChange={e => setOfferId(e.target.value)} className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-yellow-500 text-xs font-bold">
                             <option value="">Sin Promoción</option>
                             {availableOffers.map(off => <option key={off.id} value={off.id}>{off.title} ({off.discount_value})</option>)}
                         </select>
                     </div>
                 </div>
                 <div className="space-y-4">
-                    <div className="space-y-1"><label className="text-xs font-bold text-[#4A3B32]/70 uppercase tracking-widest">Nombre</label><input type="text" value={name} onChange={e => setName(e.target.value)} className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-lg p-3 text-[#4A3B32] outline-none focus:border-red-600 font-bold" /></div>
+                    <div className="space-y-1"><label className="text-xs font-bold text-white/50 uppercase tracking-widest">Nombre</label><input type="text" value={name} onChange={e => setName(e.target.value)} className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-[#E31B23] font-bold" /></div>
                     <div className="grid grid-cols-3 gap-4">
-                        <div className="space-y-1"><label className="text-xs font-bold text-[#4A3B32]/70 uppercase tracking-widest">Venta</label><input type="number" step="0.01" value={price} onChange={e => setPrice(e.target.value)} className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-lg p-3 text-[#4A3B32] outline-none focus:border-red-600 font-black" /></div>
-                        <div className="space-y-1"><label className="text-xs font-bold text-[#4A3B32]/70 uppercase tracking-widest">Costo</label><input type="number" step="0.01" value={costPrice} onChange={e => setCostPrice(e.target.value)} className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-lg p-3 text-[#4A3B32] outline-none focus:border-red-600 font-black" placeholder="0.00" /></div>
-                        <div className="space-y-1"><label className="text-xs font-bold text-[#4A3B32]/70 uppercase tracking-widest">Stock</label><input type="number" step="1" value={stock} onChange={e => setStock(e.target.value)} className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-lg p-3 text-[#4A3B32] outline-none focus:border-red-600 font-black" placeholder="Ilimitado" /></div>
+                        <div className="space-y-1"><label className="text-xs font-bold text-white/50 uppercase tracking-widest">Venta</label><input type="number" step="0.01" value={price} onChange={e => setPrice(e.target.value)} className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-[#E31B23] font-black" /></div>
+                        <div className="space-y-1"><label className="text-xs font-bold text-white/50 uppercase tracking-widest">Costo</label><input type="number" step="0.01" value={costPrice} onChange={e => setCostPrice(e.target.value)} className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-[#E31B23] font-black" placeholder="0.00" /></div>
+                        <div className="space-y-1"><label className="text-xs font-bold text-white/50 uppercase tracking-widest">Stock</label><input type="number" step="1" value={stock} onChange={e => setStock(e.target.value)} className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-[#E31B23] font-black" placeholder="Ilimitado" /></div>
                     </div>
-                    <div className="space-y-1"><label className="text-xs font-bold text-[#4A3B32]/70 uppercase tracking-widest">Categoría</label><select value={categoryId} onChange={e => setCategoryId(e.target.value)} className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-lg p-3 text-[#4A3B32] outline-none focus:border-red-600 text-xs font-bold">{categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}</select></div>
-                    <div className="space-y-1"><label className="text-xs font-bold text-[#4A3B32]/70 uppercase tracking-widest">Descripción</label><textarea rows="3" value={description} onChange={e => setDescription(e.target.value)} className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-lg p-3 text-[#4A3B32] outline-none focus:border-red-600 text-xs resize-none" /></div>
-                    <div className="space-y-2 pt-2 border-t border-[#4A3B32]/10"><label className="text-xs font-bold text-blue-400 uppercase flex items-center gap-2 tracking-widest"><Layers size={14}/> Extras Permitidos</label><div className="grid grid-cols-1 gap-2 max-h-32 overflow-y-auto no-scrollbar p-1">{modifierGroups.map(group => (<div key={group.id} onClick={() => setSelectedModifiers(p => p.includes(group.id) ? p.filter(id => id !== group.id) : [...p, group.id])} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition select-none ${selectedModifiers.includes(group.id) ? 'bg-blue-900/20 border-blue-600 text-[#4A3B32]' : 'bg-[#FAF7F2] border-[#4A3B32]/10 text-[#4A3B32]/60 hover:border-[#4A3B32]/30'}`}><div className={`w-3 h-3 rounded-sm border flex items-center justify-center ${selectedModifiers.includes(group.id) ? 'bg-blue-600 border-blue-600' : 'border-[#4A3B32]/30'}`}>{selectedModifiers.includes(group.id) && <div className="w-1.5 h-1.5 bg-white rounded-sm" />}</div><span className="text-[11px] font-bold uppercase">{group.name}</span></div>))}</div></div>
+                    <div className="space-y-1"><label className="text-xs font-bold text-white/50 uppercase tracking-widest">Categoría</label><select value={categoryId} onChange={e => setCategoryId(e.target.value)} className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-[#E31B23] text-xs font-bold">{categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}</select></div>
+                    <div className="space-y-1"><label className="text-xs font-bold text-white/50 uppercase tracking-widest">Descripción</label><textarea rows="3" value={description} onChange={e => setDescription(e.target.value)} className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-[#E31B23] text-xs resize-none" /></div>
+                    <div className="space-y-2 pt-2 border-t border-white/10"><label className="text-xs font-bold text-blue-400 uppercase flex items-center gap-2 tracking-widest"><Layers size={14}/> Extras Permitidos</label><div className="grid grid-cols-1 gap-2 max-h-32 overflow-y-auto no-scrollbar p-1">{modifierGroups.map(group => (<div key={group.id} onClick={() => setSelectedModifiers(p => p.includes(group.id) ? p.filter(id => id !== group.id) : [...p, group.id])} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition select-none ${selectedModifiers.includes(group.id) ? 'bg-blue-900/20 border-blue-600 text-white' : 'bg-black border-white/10 text-white/40 hover:border-white/30'}`}><div className={`w-3 h-3 rounded-sm border flex items-center justify-center ${selectedModifiers.includes(group.id) ? 'bg-blue-600 border-blue-600' : 'border-white/30'}`}>{selectedModifiers.includes(group.id) && <div className="w-1.5 h-1.5 bg-white rounded-sm" />}</div><span className="text-[11px] font-bold uppercase">{group.name}</span></div>))}</div></div>
                 </div>
             </div>
         </div>
-        <div className="p-6 border-t border-[#4A3B32]/10 flex justify-end gap-3 bg-white z-10">
-            <button type="button" onClick={onCancel} className="px-4 py-2 font-bold text-[#4A3B32]/70 hover:text-[#4A3B32] transition text-xs uppercase">Cancelar</button>
-            <button onClick={handleSave} disabled={loading || uploading} className="px-8 py-3 bg-[#4A3B32] text-[#FAF7F2] rounded-xl font-black text-xs uppercase hover:bg-black transition shadow-lg flex items-center gap-2 disabled:opacity-50">{loading ? <Loader2 className="animate-spin" size={16}/> : <Save size={16}/>}<span>Confirmar</span></button>
+        <div className="p-6 border-t border-white/10 flex justify-end gap-3 bg-[#1A1A1A] z-10">
+            <button type="button" onClick={onCancel} className="px-4 py-2 font-bold text-white/50 hover:text-white transition-colors text-xs uppercase">Cancelar</button>
+            <button onClick={handleSave} disabled={loading || uploading} className="px-8 py-3 bg-[#E31B23] text-white rounded-xl font-black text-xs uppercase hover:bg-black transition shadow-lg flex items-center gap-2 disabled:opacity-50 tracking-widest">{loading ? <Loader2 className="animate-spin" size={16}/> : <Save size={16}/>}<span>Confirmar</span></button>
         </div>
       </div>
     </div>

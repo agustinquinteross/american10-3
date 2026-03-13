@@ -77,17 +77,16 @@ export default function AdminCouponForm({ couponToEdit, onCancel, onSaved }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#FAF7F2]/80 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-white w-full max-w-md rounded-2xl border border-[#4A3B32]/10 shadow-2xl flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
+      <div className="bg-[#1A1A1A] w-full max-w-md rounded-2xl border border-white/10 shadow-2xl flex flex-col">
 
         {/* Header */}
-        <div className="flex justify-between items-center p-6 border-b border-[#4A3B32]/10">
-          <h2 className="text-xl font-bold text-[#4A3B32] flex items-center gap-2">
-            <Ticket size={20} className="text-[#4A3B32]" />
+        <div className="flex justify-between items-center p-6 border-b border-white/10">
+          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <Ticket size={20} className="text-[#E31B23]" />
             {couponToEdit ? 'Editar Cupón' : 'Nuevo Cupón'}
           </h2>
-          {/* ✅ FIX: type="button" para que no dispare el submit del form */}
-          <button type="button" onClick={onCancel} className="text-[#4A3B32]/70 hover:text-[#4A3B32]"><X /></button>
+          <button type="button" onClick={onCancel} className="text-white/70 hover:text-white transition-colors"><X /></button>
         </div>
 
         {/* ✅ FIX: Mismo fix que AdminBannerForm — un solo punto de submit vía form.
@@ -96,13 +95,13 @@ export default function AdminCouponForm({ couponToEdit, onCancel, onSaved }) {
 
           {/* Código */}
           <div className="space-y-2">
-            <label className="text-xs font-bold text-[#4A3B32]/70 uppercase">Código (Ej: PROMO2024)</label>
+            <label className="text-xs font-bold text-white/50 uppercase">Código (Ej: PROMO2024)</label>
             <input
               required
               type="text"
               value={code}
               onChange={e => setCode(e.target.value.toUpperCase())}
-              className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-lg p-3 text-[#4A3B32] font-black tracking-widest focus:border-red-500 outline-none placeholder-gray-600 uppercase"
+              className="w-full bg-black border border-white/20 rounded-lg p-3 text-white font-black tracking-widest focus:border-[#E31B23] outline-none placeholder-gray-600 uppercase"
               placeholder="CÓDIGO..."
             />
           </div>
@@ -110,75 +109,75 @@ export default function AdminCouponForm({ couponToEdit, onCancel, onSaved }) {
           {/* Tipo y Valor */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-xs font-bold text-[#4A3B32]/70 uppercase">Tipo</label>
-              <select value={discountType} onChange={e => setDiscountType(e.target.value)} className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-lg p-3 text-[#4A3B32] outline-none">
+              <label className="text-xs font-bold text-white/50 uppercase">Tipo</label>
+              <select value={discountType} onChange={e => setDiscountType(e.target.value)} className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-[#E31B23]">
                 <option value="percent">Porcentaje (%)</option>
                 <option value="fixed">Monto Fijo ($)</option>
               </select>
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold text-[#4A3B32]/70 uppercase">Valor</label>
+              <label className="text-xs font-bold text-white/50 uppercase">Valor</label>
               <input
                 required
                 type="number"
                 min="0"
                 value={value}
                 onChange={e => setValue(e.target.value)}
-                className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-lg p-3 text-[#4A3B32] focus:border-red-500 outline-none"
+                className="w-full bg-black border border-white/20 rounded-lg p-3 text-white focus:border-[#E31B23] outline-none"
               />
             </div>
           </div>
 
           {/* Restricciones */}
-          <div className="pt-4 border-t border-[#4A3B32]/10 space-y-4">
-            <p className="text-xs font-bold text-[#4A3B32]/60 uppercase flex items-center gap-2">Restricciones (Opcional)</p>
+          <div className="pt-4 border-t border-white/10 space-y-4">
+            <p className="text-xs font-bold text-white/40 uppercase flex items-center gap-2">Restricciones (Opcional)</p>
 
             {/* Fecha Límite */}
-            <div className="flex items-center gap-3 bg-[#FAF7F2] p-3 rounded-lg border border-[#4A3B32]/10">
-              <Calendar size={20} className="text-[#4A3B32]/60" />
+            <div className="flex items-center gap-3 bg-black/40 p-3 rounded-lg border border-white/10">
+              <Calendar size={20} className="text-white/40" />
               <div className="flex-1">
-                <label className="text-[10px] text-[#4A3B32]/70 block mb-1">
-                  Fecha de Vencimiento <span className="text-[#4A3B32]/50">(hora local)</span>:
+                <label className="text-[10px] text-white/60 block mb-1">
+                  Fecha de Vencimiento <span className="text-white/30">(hora local)</span>:
                 </label>
                 <input
                   type="datetime-local"
                   value={expiresAt}
                   onChange={e => setExpiresAt(e.target.value)}
-                  className="bg-transparent text-[#4A3B32] text-sm w-full outline-none scheme-dark"
+                  className="bg-transparent text-white text-sm w-full outline-none scheme-dark"
                 />
               </div>
             </div>
 
             {/* Límite de Usos */}
-            <div className="flex items-center gap-3 bg-[#FAF7F2] p-3 rounded-lg border border-[#4A3B32]/10">
-              <Hash size={20} className="text-[#4A3B32]/60" />
+            <div className="flex items-center gap-3 bg-black/40 p-3 rounded-lg border border-white/10">
+              <Hash size={20} className="text-white/40" />
               <div className="flex-1">
-                <label className="text-[10px] text-[#4A3B32]/70 block mb-1">Límite de usos totales:</label>
+                <label className="text-[10px] text-white/60 block mb-1">Límite de usos totales:</label>
                 <input
                   type="number"
                   min="1"
                   placeholder="Ej: 50 (Dejar vacío para Ilimitado)"
                   value={usageLimit}
                   onChange={e => setUsageLimit(e.target.value)}
-                  className="bg-transparent text-[#4A3B32] text-sm w-full outline-none placeholder-gray-700"
+                  className="bg-transparent text-white text-sm w-full outline-none placeholder-gray-700"
                 />
               </div>
             </div>
           </div>
 
           {/* Footer dentro del form */}
-          <div className="pt-4 border-t border-[#4A3B32]/10 flex justify-end gap-3">
+          <div className="pt-4 border-t border-white/10 flex justify-end gap-3">
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 rounded-lg font-bold text-[#4A3B32]/70 hover:bg-[#4A3B32]/5 transition text-sm"
+              className="px-4 py-2 rounded-lg font-bold text-white/50 hover:bg-white/5 transition-colors text-sm"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2 rounded-lg font-bold bg-[#4A3B32] text-[#FAF7F2] hover:bg-black transition shadow-lg flex items-center gap-2 text-sm disabled:opacity-50"
+              className="px-6 py-2 rounded-lg font-bold bg-[#E31B23] text-white hover:bg-[#C1121F] transition shadow-lg flex items-center gap-2 text-sm disabled:opacity-50 tracking-widest"
             >
               {loading ? <Loader2 className="animate-spin" size={16} /> : <><Save size={16} /> Guardar</>}
             </button>

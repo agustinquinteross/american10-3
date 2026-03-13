@@ -89,26 +89,26 @@ export default function AdminCategoryForm({ onCancel, onSaved }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-[#FAF7F2]/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white border border-[#4A3B32]/10 rounded-2xl w-full max-w-md shadow-2xl flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-[#1A1A1A] border border-white/10 rounded-2xl w-full max-w-md shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
         
         {/* Header Modal */}
-        <div className="p-4 border-b border-[#4A3B32]/10 flex justify-between items-center bg-[#FAF7F2]/50 rounded-t-2xl">
-          <h2 className="text-xl font-black text-[#4A3B32] italic tracking-tighter uppercase">
+        <div className="p-4 border-b border-white/10 flex justify-between items-center bg-[#1A1A1A]">
+          <h2 className="text-xl font-black text-white italic tracking-tighter uppercase">
             Gestión de Categorías
           </h2>
-          <button onClick={onCancel} className="p-2 bg-[#4A3B32]/5 hover:bg-[#4A3B32]/10 rounded-full transition-colors text-[#4A3B32]/70 hover:text-[#4A3B32]">
+          <button onClick={onCancel} className="p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors text-white/70 hover:text-white">
             <X size={20} />
           </button>
         </div>
 
         {/* Formulario Crear/Editar */}
-        <div className="p-4 border-b border-[#4A3B32]/10 bg-[#FAF7F2]/30">
+        <div className="p-4 border-b border-white/10 bg-black/20">
           <form onSubmit={handleSave} className="flex gap-2">
             <input
               type="text"
               placeholder="Nombre de la categoría..."
-              className="flex-1 bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-lg p-2.5 text-[#4A3B32] outline-none focus:border-red-600 transition-colors placeholder:text-[#4A3B32]/50 text-sm"
+              className="flex-1 bg-black border border-white/20 rounded-lg p-2.5 text-white outline-none focus:border-[#E31B23] transition-colors placeholder:text-white/30 text-sm"
               value={currentCategory.name}
               onChange={(e) => setCurrentCategory({ ...currentCategory, name: e.target.value })}
               required
@@ -116,13 +116,13 @@ export default function AdminCategoryForm({ onCancel, onSaved }) {
             <button 
               type="submit" 
               disabled={saving || !currentCategory.name.trim()}
-              className="bg-[#4A3B32] hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed text-[#FAF7F2] px-4 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition flex items-center justify-center gap-2"
+              className="bg-[#E31B23] hover:bg-[#C1121F] disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition flex items-center justify-center gap-2"
             >
               {saving ? <Loader2 size={16} className="animate-spin"/> : (isEditing ? <Save size={16}/> : <Plus size={16}/>)}
               {isEditing ? 'Guardar' : 'Crear'}
             </button>
             {isEditing && (
-              <button type="button" onClick={resetForm} className="px-3 py-2.5 bg-[#4A3B32]/5 text-[#4A3B32]/70 hover:text-[#4A3B32] rounded-lg transition">
+              <button type="button" onClick={resetForm} className="px-3 py-2.5 bg-white/5 text-white/70 hover:text-white rounded-lg transition">
                 <X size={16} />
               </button>
             )}
@@ -132,15 +132,15 @@ export default function AdminCategoryForm({ onCancel, onSaved }) {
         {/* Lista de Categorías */}
         <div className="p-4 overflow-y-auto custom-scrollbar flex-1">
           {loading ? (
-            <div className="flex justify-center p-8"><Loader2 className="animate-spin text-[#4A3B32]" /></div>
+            <div className="flex justify-center p-8"><Loader2 className="animate-spin text-[#E31B23]" /></div>
           ) : (
             <div className="space-y-2">
               {categories.length === 0 ? (
-                <p className="text-center text-[#4A3B32]/60 text-sm py-4">No hay categorías. Crea la primera.</p>
+                <p className="text-center text-white/30 text-sm py-4">No hay categorías. Crea la primera.</p>
               ) : (
                 categories.map((cat) => (
-                  <div key={cat.id} className="flex justify-between items-center bg-[#FAF7F2] border border-[#4A3B32]/10 p-3 rounded-xl hover:border-[#4A3B32]/30 transition group">
-                    <span className="font-bold text-[#4A3B32]/90">{cat.name}</span>
+                  <div key={cat.id} className="flex justify-between items-center bg-black/40 border border-white/10 p-3 rounded-xl hover:border-white/30 transition group">
+                    <span className="font-bold text-white/90">{cat.name}</span>
                     <div className="flex gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
                       <button onClick={() => handleEdit(cat)} className="p-1.5 text-blue-400 hover:bg-blue-900/30 rounded transition">
                         <Edit size={16} />

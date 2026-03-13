@@ -124,57 +124,57 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
 
   // 4. Renderizado
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-[#FAF7F2]/90 backdrop-blur-sm animate-in fade-in">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
 
-      <div className="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] border border-[#4A3B32]/10 text-[#4A3B32]/90">
+      <div className="bg-[#1A1A1A] w-full max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] border border-white/10 text-white">
 
         {/* Imagen Header */}
-        <div className="relative h-48 sm:h-56 bg-[#4A3B32]/5 shrink-0">
+        <div className="relative h-48 sm:h-56 bg-black shrink-0">
           {product.image_url ? (
             <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-[#4A3B32]/5 text-[#4A3B32]/50">🍔</div>
+            <div className="w-full h-full flex items-center justify-center bg-white/5 text-white/20">🍔</div>
           )}
           <button
             type="button"
             onClick={onClose}
-            className="absolute top-4 right-4 bg-[#FAF7F2]/60 hover:bg-[#FAF7F2]/80 text-[#4A3B32] p-2 rounded-full transition border border-[#4A3B32]/20"
+            className="absolute top-4 right-4 bg-black/60 hover:bg-black text-white p-2 rounded-full transition border border-white/20"
           >
             <X size={20} />
           </button>
-          <div className="absolute bottom-0 w-full h-20 bg-gradient-to-t from-gray-900 to-transparent"></div>
+          <div className="absolute bottom-0 w-full h-20 bg-gradient-to-t from-[#1A1A1A] to-transparent"></div>
         </div>
 
         {/* Scroll Content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-white custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#1A1A1A] custom-scrollbar">
 
           {/* Info Producto */}
           <div>
             <div className="flex justify-between items-start mb-2">
-              <h2 className="text-3xl font-black text-[#4A3B32] uppercase italic tracking-tighter leading-none">{product.name}</h2>
+              <h2 className="text-3xl font-black text-white uppercase italic tracking-tighter leading-none">{product.name}</h2>
               {product.stock !== null && product.stock !== undefined && (
-                <span className={`text-[10px] font-black px-2 py-1 rounded border uppercase tracking-widest ${product.stock <= 0 ? 'bg-red-600 text-white border-red-600' : product.stock <= 5 ? 'bg-orange-500 text-white border-orange-500 animate-pulse' : 'bg-green-600/20 text-green-500 border-green-600/30'}`}>
+                <span className={`text-[10px] font-black px-2 py-1 rounded border uppercase tracking-widest ${product.stock <= 0 ? 'bg-[#E31B23] text-white border-[#E31B23]' : product.stock <= 5 ? 'bg-orange-500 text-white border-orange-500 animate-pulse' : 'bg-green-600/20 text-green-500 border-green-600/30'}`}>
                   {product.stock <= 0 ? 'Agotado' : product.stock <= 5 ? `¡Casi Agotado! (${product.stock})` : `En Stock: ${product.stock}`}
                 </span>
               )}
             </div>
-            <p className="text-[#4A3B32]/70 text-sm leading-relaxed">{product.description}</p>
+            <p className="text-white/60 text-sm leading-relaxed">{product.description}</p>
           </div>
 
-          <hr className="border-[#4A3B32]/10" />
+          <hr className="border-white/10" />
 
           {/* Extras */}
           {groups.length > 0 ? (
             groups.map(group => (
               <div key={group.id} className="space-y-3">
                 <div className="flex justify-between items-end">
-                  <h3 className="font-bold text-[#4A3B32] uppercase text-sm tracking-wide">{group.name}</h3>
+                  <h3 className="font-bold text-white/50 uppercase text-[10px] tracking-widest">{group.name}</h3>
                   <div className="flex gap-2">
                     {group.min_selection > 0 && (
-                      <span className="text-[10px] bg-red-900/40 text-red-400 px-2 py-0.5 rounded border border-red-900/50 font-bold uppercase">Obligatorio</span>
+                      <span className="text-[10px] bg-[#E31B23]/20 text-[#E31B23] px-2 py-0.5 rounded border border-[#E31B23]/30 font-bold uppercase tracking-widest">Obligatorio</span>
                     )}
                     {group.max_selection > 1 && (
-                      <span className="text-[10px] text-[#4A3B32]/60 font-bold bg-[#4A3B32]/5 px-2 py-0.5 rounded border border-[#4A3B32]/20">Max: {group.max_selection}</span>
+                      <span className="text-[10px] text-white/40 font-bold bg-white/5 px-2 py-0.5 rounded border border-white/10">Max: {group.max_selection}</span>
                     )}
                   </div>
                 </div>
@@ -187,17 +187,17 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
                         key={option.id}
                         onClick={() => option.is_available && handleToggleOption(group, option)}
                         className={`flex justify-between items-center p-3 rounded-xl border cursor-pointer transition-all active:scale-[0.98] 
-                          ${!option.is_available ? 'opacity-50 grayscale cursor-not-allowed bg-[#4A3B32]/5' : ''}
-                          ${isSelected ? 'border-red-600 bg-red-900/10 shadow-[0_0_15px_rgba(220,38,38,0.1)]' : 'border-[#4A3B32]/10 bg-[#FAF7F2]/40 hover:border-[#4A3B32]/30'}`}
+                          ${!option.is_available ? 'opacity-30 grayscale cursor-not-allowed bg-white/5' : ''}
+                          ${isSelected ? 'border-[#E31B23] bg-[#E31B23]/10 shadow-[0_0_15px_rgba(227,27,35,0.15)]' : 'border-white/10 bg-black/40 hover:border-white/20'}`}
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all ${isSelected ? 'border-red-500 bg-[#4A3B32] text-[#FAF7F2]' : 'border-[#4A3B32]/30 bg-transparent'}`}>
+                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all ${isSelected ? 'border-[#E31B23] bg-[#E31B23] text-white' : 'border-white/20 bg-transparent'}`}>
                             {isSelected && <Check size={12} strokeWidth={4} />}
                           </div>
-                          <span className={`font-medium text-sm ${isSelected ? 'text-[#4A3B32]' : 'text-[#4A3B32]/80'}`}>{option.name}</span>
+                          <span className={`font-bold text-sm uppercase tracking-tight ${isSelected ? 'text-white' : 'text-white/60'}`}>{option.name}</span>
                         </div>
                         {/* ✅ FIX: También formateamos el precio de cada extra para consistencia */}
-                        <span className={`text-sm font-bold ${isSelected ? 'text-[#4A3B32]' : 'text-[#4A3B32]/60'}`}>
+                        <span className={`text-sm font-black ${isSelected ? 'text-[#E31B23]' : 'text-white/30'}`}>
                           {Number(option.price) > 0 ? `+$${formatPrice(Number(option.price))}` : 'Gratis'}
                         </span>
                       </div>
@@ -207,36 +207,36 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
               </div>
             ))
           ) : (
-            <p className="text-center text-[#4A3B32]/50 text-xs italic">Este producto no tiene ingredientes extra.</p>
+            <p className="text-center text-white/40 text-xs italic">Este producto no tiene ingredientes extra.</p>
           )}
 
           {/* SECCIÓN NOTA DE PEDIDO */}
-          <div className="bg-[#FAF7F2]/30 p-4 rounded-xl border border-[#4A3B32]/10">
-            <div className="flex items-center gap-2 mb-2">
-              <PenLine size={14} className="text-yellow-500" />
-              <h3 className="font-bold text-[#4A3B32] text-xs uppercase tracking-wide">¿Alguna aclaración?</h3>
+          <div className="bg-black/40 p-5 rounded-2xl border border-white/10">
+            <div className="flex items-center gap-2 mb-3">
+              <PenLine size={14} className="text-[#E31B23]" />
+              <h3 className="font-black text-white/40 text-[10px] uppercase tracking-[0.2em]">¿Alguna aclaración?</h3>
             </div>
             <textarea
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              className="w-full bg-white border border-[#4A3B32]/20 rounded-lg p-3 text-[#4A3B32] text-sm focus:border-yellow-500 outline-none placeholder-gray-600 resize-none transition-all focus:ring-1 focus:ring-yellow-500/50"
+              className="w-full bg-black border border-white/10 rounded-xl p-4 text-white text-sm focus:border-[#E31B23] outline-none placeholder-white/20 resize-none transition-all focus:ring-4 focus:ring-[#E31B23]/10"
               rows="2"
-              placeholder="Ej: Sin sal, la carne bien cocida, sin mayonesa..."
+              placeholder="Ej: Sin sal, la carne bien cocida..."
             />
           </div>
 
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-white border-t border-[#4A3B32]/10 z-10 shrink-0">
+        <div className="p-6 bg-[#1A1A1A] border-t border-white/10 z-10 shrink-0">
           <div className="flex items-center gap-4">
-            <div className="flex items-center bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-xl p-1 shrink-0">
+            <div className="flex items-center bg-black border border-white/10 rounded-xl p-1 shrink-0">
               <button
                 type="button"
                 onClick={() => setQty(Math.max(1, qty - 1))}
-                className="w-10 h-10 flex items-center justify-center font-bold text-lg text-[#4A3B32]/70 hover:text-[#4A3B32] transition active:scale-90"
+                className="w-10 h-10 flex items-center justify-center font-bold text-lg text-white/40 hover:text-white transition active:scale-90"
               >-</button>
-              <span className="w-8 text-center font-bold text-[#4A3B32] text-lg">{qty}</span>
+              <span className="w-8 text-center font-bold text-white text-lg">{qty}</span>
               <button
                 type="button"
                 onClick={() => {
@@ -244,7 +244,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
                     setQty(qty + 1)
                   }
                 }}
-                className={`w-10 h-10 flex items-center justify-center font-bold text-lg transition active:scale-90 ${product.stock !== undefined && product.stock !== null && qty >= product.stock ? 'text-gray-300 cursor-not-allowed' : 'text-[#4A3B32]/70 hover:text-[#4A3B32]'}`}
+                className={`w-10 h-10 flex items-center justify-center font-bold text-lg transition active:scale-90 ${product.stock !== undefined && product.stock !== null && qty >= product.stock ? 'text-white/10 cursor-not-allowed' : 'text-white/40 hover:text-white'}`}
               >+</button>
             </div>
 
@@ -252,7 +252,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
               type="button"
               onClick={handleAddToOrder}
               disabled={product.stock === 0}
-              className="flex-1 bg-[#4A3B32] hover:bg-black text-[#FAF7F2] font-black py-3 rounded-xl text-lg flex justify-between px-6 shadow-lg shadow-red-900/30 transition-all active:scale-95 border-t border-red-400 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed"
+              className="flex-1 bg-[#E31B23] hover:bg-[#C1121F] text-white font-black py-4 rounded-xl text-lg flex justify-between px-6 shadow-2xl shadow-[#E31B23]/20 transition-all active:scale-95 border-t border-white/20 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed uppercase tracking-widest"
             >
               <span>{product.stock === 0 ? 'AGOTADO' : 'AGREGAR'}</span>
               <span>${totalDisplay}</span>

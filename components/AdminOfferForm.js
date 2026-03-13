@@ -44,13 +44,13 @@ export default function AdminOfferForm({ onCancel, onSaved }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-[#FAF7F2]/80 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-white w-full max-w-md rounded-2xl border border-[#4A3B32]/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-        <div className="p-4 border-b border-[#4A3B32]/10 flex justify-between items-center bg-[#FAF7F2]/40 shrink-0">
-          <h2 className="font-black text-[#4A3B32] text-lg flex items-center gap-2 italic uppercase tracking-tighter">
-            <Zap className="text-yellow-500" size={18}/> CREADOR DE OFERTAS
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
+      <div className="bg-[#1A1A1A] w-full max-w-md rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div className="p-4 border-b border-white/10 flex justify-between items-center bg-[#1A1A1A] shrink-0">
+          <h2 className="font-black text-white text-lg flex items-center gap-2 italic uppercase tracking-tighter">
+            <Zap className="text-[#E31B23]" size={18}/> CREADOR DE OFERTAS
           </h2>
-          <button onClick={onCancel} className="text-[#4A3B32]/70 hover:text-[#4A3B32] transition-colors"><X size={20}/></button>
+          <button onClick={onCancel} className="text-white/70 hover:text-white transition-colors"><X size={20}/></button>
         </div>
 
         <div className="p-6 overflow-y-auto custom-scrollbar">
@@ -58,64 +58,64 @@ export default function AdminOfferForm({ onCancel, onSaved }) {
             
             {/* SELECTOR DINÁMICO DE TIPO */}
             <div className="grid grid-cols-3 gap-2">
-                <button type="button" onClick={() => setOfferType('nxm')} className={`p-3 rounded-xl border flex flex-col items-center gap-1 transition-all ${offerType === 'nxm' ? 'bg-[#4A3B32] border-red-500 text-[#FAF7F2]' : 'bg-[#FAF7F2] border-[#4A3B32]/20 text-[#4A3B32]/70 hover:border-[#4A3B32]/40'}`}>
+                <button type="button" onClick={() => setOfferType('nxm')} className={`p-3 rounded-xl border flex flex-col items-center gap-1 transition-all ${offerType === 'nxm' ? 'bg-[#E31B23] border-[#E31B23] text-white' : 'bg-black border-white/20 text-white/40 hover:border-white/40'}`}>
                     <Copy size={20}/> <span className="text-[10px] font-bold text-center leading-tight">Llevá N<br/>Pagá M</span>
                 </button>
-                <button type="button" onClick={() => setOfferType('percent')} className={`p-3 rounded-xl border flex flex-col items-center gap-1 transition-all ${offerType === 'percent' ? 'bg-blue-600 border-blue-500 text-[#4A3B32]' : 'bg-[#FAF7F2] border-[#4A3B32]/20 text-[#4A3B32]/70 hover:border-[#4A3B32]/40'}`}>
+                <button type="button" onClick={() => setOfferType('percent')} className={`p-3 rounded-xl border flex flex-col items-center gap-1 transition-all ${offerType === 'percent' ? 'bg-blue-600 border-blue-500 text-white' : 'bg-black border-white/20 text-white/40 hover:border-white/40'}`}>
                     <Percent size={20}/> <span className="text-[10px] font-bold text-center leading-tight">Descuento<br/>Directo</span>
                 </button>
-                <button type="button" onClick={() => setOfferType('second_unit')} className={`p-3 rounded-xl border flex flex-col items-center gap-1 transition-all ${offerType === 'second_unit' ? 'bg-purple-600 border-purple-500 text-[#4A3B32]' : 'bg-[#FAF7F2] border-[#4A3B32]/20 text-[#4A3B32]/70 hover:border-[#4A3B32]/40'}`}>
+                <button type="button" onClick={() => setOfferType('second_unit')} className={`p-3 rounded-xl border flex flex-col items-center gap-1 transition-all ${offerType === 'second_unit' ? 'bg-purple-600 border-purple-500 text-white' : 'bg-black border-white/20 text-white/40 hover:border-white/40'}`}>
                     <Tag size={20}/> <span className="text-[10px] font-bold text-center leading-tight">Dto. en<br/>2da Unidad</span>
                 </button>
             </div>
 
             {/* CONFIGURADOR DINÁMICO */}
-            <div className="bg-[#FAF7F2]/50 p-4 rounded-xl border border-[#4A3B32]/10 space-y-4">
-                <h3 className="text-xs font-black text-[#4A3B32]/60 uppercase flex items-center gap-2 mb-2">
+            <div className="bg-black/40 p-4 rounded-xl border border-white/10 space-y-4">
+                <h3 className="text-xs font-black text-white/40 uppercase flex items-center gap-2 mb-2">
                    ⚙️ Regla de la Promoción
                 </h3>
                 
                 {offerType === 'nxm' && (
                     <div className="flex items-center gap-4 justify-center">
                         <div className="text-center">
-                            <label className="block text-[10px] font-bold text-[#4A3B32]/70 mb-1">El cliente LLEVA</label>
-                            <input type="number" min="2" max="10" value={valN} onChange={e => setValN(e.target.value)} className="w-16 bg-white border border-[#4A3B32]/20 rounded-lg p-2 text-[#4A3B32] text-center font-black focus:border-red-500 outline-none" />
+                            <label className="block text-[10px] font-bold text-white/50 mb-1">El cliente LLEVA</label>
+                            <input type="number" min="2" max="10" value={valN} onChange={e => setValN(e.target.value)} className="w-16 bg-black border border-white/20 rounded-lg p-2 text-white text-center font-black focus:border-[#E31B23] outline-none" />
                         </div>
-                        <span className="text-2xl font-black text-[#4A3B32]/50">X</span>
+                        <span className="text-2xl font-black text-white/20">X</span>
                         <div className="text-center">
-                            <label className="block text-[10px] font-bold text-[#4A3B32]/70 mb-1">El cliente PAGA</label>
-                            <input type="number" min="1" max="9" value={valM} onChange={e => setValM(e.target.value)} className="w-16 bg-white border border-[#4A3B32]/20 rounded-lg p-2 text-[#4A3B32] text-center font-black focus:border-red-500 outline-none" />
+                            <label className="block text-[10px] font-bold text-white/50 mb-1">El cliente PAGA</label>
+                            <input type="number" min="1" max="9" value={valM} onChange={e => setValM(e.target.value)} className="w-16 bg-black border border-white/20 rounded-lg p-2 text-white text-center font-black focus:border-[#E31B23] outline-none" />
                         </div>
                     </div>
                 )}
 
                 {(offerType === 'percent' || offerType === 'second_unit') && (
                     <div>
-                        <label className="block text-[10px] font-bold text-[#4A3B32]/70 mb-1">Porcentaje a descontar (%)</label>
+                        <label className="block text-[10px] font-bold text-white/50 mb-1">Porcentaje a descontar (%)</label>
                         <div className="relative w-1/2 mx-auto">
-                            <Percent size={16} className="absolute left-3 top-2.5 text-[#4A3B32]/60" />
-                            <input type="number" min="1" max="100" value={valPct} onChange={e => setValPct(e.target.value)} className="w-full pl-9 bg-white border border-[#4A3B32]/20 rounded-lg p-2 text-[#4A3B32] font-black focus:border-blue-500 outline-none" />
+                            <Percent size={16} className="absolute left-3 top-2.5 text-white/40" />
+                            <input type="number" min="1" max="100" value={valPct} onChange={e => setValPct(e.target.value)} className="w-full pl-9 bg-black border border-white/20 rounded-lg p-2 text-white font-black focus:border-blue-500 outline-none" />
                         </div>
-                        {offerType === 'second_unit' && <p className="text-[10px] text-[#4A3B32]/60 text-center mt-2 italic">Se aplicará el {valPct}% de descuento a la segunda unidad de cada par.</p>}
+                        {offerType === 'second_unit' && <p className="text-[10px] text-white/40 text-center mt-2 italic font-bold">Se aplicará el {valPct}% de descuento a la segunda unidad de cada par.</p>}
                     </div>
                 )}
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-[10px] font-black text-[#4A3B32]/60 mb-1 uppercase">Título de la Promo</label>
-                <input required type="text" className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-xl p-3 text-[#4A3B32] focus:border-yellow-500 outline-none text-sm" value={title} onChange={e => setTitle(e.target.value)} placeholder="Ej: Especial Día del Amigo" />
+                <label className="block text-[10px] font-black text-white/40 mb-1 uppercase tracking-widest">Título de la Promo</label>
+                <input required type="text" className="w-full bg-black border border-white/20 rounded-xl p-3 text-white focus:border-[#E31B23] outline-none text-sm font-bold" value={title} onChange={e => setTitle(e.target.value)} placeholder="Ej: Especial Día del Amigo" />
               </div>
               <div>
-                <label className="block text-[10px] font-black text-[#4A3B32]/60 mb-1 uppercase">Descripción</label>
-                <input required type="text" className="w-full bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-xl p-3 text-[#4A3B32] focus:border-yellow-500 outline-none text-sm" value={description} onChange={e => setDescription(e.target.value)} placeholder="Ej: Llevate 3 burgers pagando solo 2." />
+                <label className="block text-[10px] font-black text-white/40 mb-1 uppercase tracking-widest">Descripción</label>
+                <input required type="text" className="w-full bg-black border border-white/20 rounded-xl p-3 text-white focus:border-[#E31B23] outline-none text-sm" value={description} onChange={e => setDescription(e.target.value)} placeholder="Ej: Llevate 3 burgers pagando solo 2." />
               </div>
             </div>
             
             {/* VISTA PREVIA DE LA ETIQUETA */}
-            <div className="flex justify-between items-center bg-yellow-900/10 border border-yellow-900/30 p-3 rounded-lg">
-                <span className="text-[10px] font-bold text-[#4A3B32]/60 uppercase">Etiqueta Generada:</span>
-                <span className="bg-yellow-500 text-black font-black text-[10px] uppercase px-2 py-1 rounded shadow-lg">
+            <div className="flex justify-between items-center bg-white/5 border border-white/10 p-4 rounded-xl">
+                <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">Etiqueta Generada:</span>
+                <span className="bg-[#E31B23] text-white font-black text-[10px] uppercase px-3 py-1.5 rounded shadow-lg tracking-widest">
                     {offerType === 'nxm' ? `${valN}x${valM}` : offerType === 'percent' ? `${valPct}% OFF` : `${valPct}% 2da`}
                 </span>
             </div>
@@ -123,8 +123,8 @@ export default function AdminOfferForm({ onCancel, onSaved }) {
           </form>
         </div>
 
-        <div className="p-4 border-t border-[#4A3B32]/10 bg-[#FAF7F2]/40 shrink-0">
-            <button form="offerForm" type="submit" disabled={loading} className="w-full bg-green-600 hover:bg-green-500 text-[#4A3B32] py-4 rounded-xl font-bold flex justify-center items-center gap-2 transition-all active:scale-95 disabled:opacity-50">
+        <div className="p-4 border-t border-white/10 bg-[#1A1A1A] shrink-0">
+            <button form="offerForm" type="submit" disabled={loading} className="w-full bg-[#E31B23] hover:bg-[#C1121F] text-white py-4 rounded-xl font-black flex justify-center items-center gap-2 transition-all active:scale-95 disabled:opacity-50 uppercase tracking-[0.2em]">
                 {loading ? <Loader2 className="animate-spin" size={20}/> : <><Save size={20}/> GUARDAR PROMOCIÓN</>}
             </button>
         </div>

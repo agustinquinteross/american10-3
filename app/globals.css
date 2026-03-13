@@ -4,14 +4,16 @@
   --font-sans: var(--font-montserrat), sans-serif;
   --font-script: var(--font-great-vibes), cursive;
   
-  --color-gusto-bg: #FAF7F2;
-  --color-gusto-text: #4A3B32;
+  --color-gusto-bg: #0A0A0A;
+  --color-gusto-text: #FFFFFF;
+  --color-gusto-accent: #E31B23;
 }
 
 :root {
-  --foreground-rgb: 62, 39, 35; /* Marrón/Café #4A3B32 */
-  --background-start-rgb: 245, 241, 233; /* Crema #FAF7F2 */
-  --background-end-rgb: 250, 248, 245; /* Crema más claro */
+  --foreground-rgb: 255, 255, 255; /* Blanco #FFFFFF */
+  --background-start-rgb: 10, 10, 10; /* Negro #0A0A0A */
+  --background-end-rgb: 0, 0, 0; /* Negro absoluto */
+  --accent-rgb: 227, 27, 35; /* Rojo #E31B23 */
 }
 
 @layer base {
@@ -51,49 +53,88 @@
 @layer components {
   /* --- FONDO Y TEXTO BASE --- */
   .gusto-body {
-    @apply min-h-screen bg-[#FAF7F2] text-[#4A3B32] font-sans;
+    @apply min-h-screen bg-[#0A0A0A] text-[#FFFFFF] font-sans;
   }
 
   /* --- TARJETAS --- */
   .gusto-card {
-    @apply bg-white border border-[#4A3B32]/10 rounded-xl p-4 shadow-sm transition-all;
+    @apply bg-[#1A1A1A] border border-[#FFFFFF]/10 rounded-xl p-4 shadow-sm transition-all;
   }
   
   .gusto-card-hover {
-    @apply hover:border-[#4A3B32]/30 hover:shadow-md hover:-translate-y-0.5;
+    @apply hover:border-[#E31B23]/30 hover:shadow-md hover:-translate-y-0.5;
   }
 
   /* --- TIPOGRAFÍA DE IMPACTO --- */
   .gusto-title {
-    @apply font-serif italic tracking-tighter text-[#4A3B32];
+    @apply font-serif italic tracking-tighter text-[#FFFFFF];
   }
 
   .gusto-label {
-    @apply text-[10px] font-bold uppercase tracking-widest text-[#4A3B32]/70;
+    @apply text-[10px] font-bold uppercase tracking-widest text-[#FFFFFF]/70;
   }
 
   /* --- BOTONES --- */
   .gusto-btn-primary {
-    @apply bg-[#4A3B32] hover:bg-black text-[#FAF7F2] font-bold text-xs uppercase tracking-widest px-5 py-2.5 rounded-lg transition-all shadow-md active:scale-95 border border-[#4A3B32];
+    @apply bg-[#E31B23] hover:bg-[#C1121F] text-[#FFFFFF] font-bold text-xs uppercase tracking-widest px-5 py-2.5 rounded-lg transition-all shadow-md active:scale-95 border border-[#E31B23];
   }
 
   .gusto-btn-secondary {
-    @apply bg-transparent border border-[#4A3B32]/30 hover:border-[#4A3B32] hover:bg-[#4A3B32]/5 text-[#4A3B32] font-bold text-xs uppercase px-4 py-2 rounded-lg transition-all;
+    @apply bg-transparent border border-[#FFFFFF]/30 hover:border-[#E31B23] hover:bg-[#E31B23]/5 text-[#FFFFFF] font-bold text-xs uppercase px-4 py-2 rounded-lg transition-all;
   }
 
   /* --- INPUTS Y FORMULARIOS --- */
   .gusto-input {
-    @apply w-full bg-white border border-[#4A3B32]/20 rounded-xl p-3 text-[#4A3B32] outline-none focus:border-[#4A3B32] transition-colors placeholder:text-[#4A3B32]/50;
+    @apply w-full bg-[#1A1A1A] border border-[#FFFFFF]/20 rounded-xl p-3 text-[#FFFFFF] outline-none focus:border-[#E31B23] transition-colors placeholder:text-[#FFFFFF]/50;
   }
 
   /* --- CONTENEDORES DE SECCIÓN --- */
   .gusto-section-header {
-    @apply p-3 border-b border-[#4A3B32]/10 bg-white/50 flex items-center justify-between rounded-t-xl;
+    @apply p-3 border-b border-[#FFFFFF]/10 bg-[#1A1A1A]/80 flex items-center justify-between rounded-t-xl;
   }
 
   /* --- BADGES (MÉTODOS DE PAGO/ENTREGA) --- */
-  .badge-delivery { @apply bg-[#4A3B32]/10 text-[#4A3B32] border border-[#4A3B32]/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase; }
-  .badge-pickup { @apply bg-amber-900/10 text-amber-800 border border-amber-900/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase; }
-  .badge-cash { @apply text-green-700 flex items-center gap-1; }
-  .badge-mp { @apply text-sky-600 flex items-center gap-1; }
+  .badge-delivery { @apply bg-[#E31B23]/10 text-[#E31B23] border border-[#E31B23]/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase; }
+  .badge-pickup { @apply bg-white/10 text-white border border-white/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase; }
+  .badge-cash { @apply text-green-500 flex items-center gap-1; }
+  .badge-mp { @apply text-sky-400 flex items-center gap-1; }
+}
+
+/* --- CUSTOM DARK SCROLLBAR --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #111111;
+  border: 2px solid #050505;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E31B23;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #111111 #050505;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(227, 27, 35, 0.4);
 }

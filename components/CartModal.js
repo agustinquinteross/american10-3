@@ -237,12 +237,12 @@ export default function CartModal({ isOpen, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-[#FAF7F2]/90 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 max-h-[95vh] overflow-y-auto shadow-2xl border border-[#4A3B32]/10 text-[#4A3B32]/90 no-scrollbar">
+    <div className="fixed inset-0 bg-black/80 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm animate-in fade-in">
+      <div className="bg-[#1A1A1A] w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 max-h-[95vh] overflow-y-auto shadow-2xl border border-white/10 text-white no-scrollbar">
         
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-black text-[#4A3B32] italic tracking-tighter uppercase">Tu Pedido</h2>
-          <button onClick={onClose} className="p-2 bg-[#4A3B32]/5 rounded-full hover:bg-[#4A3B32]/10 text-[#4A3B32]"><X size={20} /></button>
+          <h2 className="text-2xl font-black text-white italic tracking-tighter uppercase">Tu Pedido</h2>
+          <button onClick={onClose} className="p-2 bg-white/5 rounded-full hover:bg-white/10 text-white"><X size={20} /></button>
         </div>
 
         {/* LISTA DE PRODUCTOS */}
@@ -287,49 +287,49 @@ export default function CartModal({ isOpen, onClose }) {
         {/* FORMULARIO */}
         <div className="space-y-4">
             <div className="flex gap-2">
-                <input type="text" placeholder="CUPÓN" className="w-full pl-4 p-3 bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-xl text-[#4A3B32] outline-none uppercase text-sm focus:border-green-600" value={couponCode} onChange={e => setCouponCode(e.target.value)} />
-                <button onClick={handleApplyCoupon} className="bg-[#4A3B32]/5 text-[#4A3B32] font-bold px-4 rounded-xl text-xs border border-[#4A3B32]/20">APLICAR</button>
+                <input type="text" placeholder="CUPÓN" className="w-full pl-4 p-3 bg-black border border-white/10 rounded-xl text-white outline-none uppercase text-xs font-black tracking-widest focus:border-[#E31B23]" value={couponCode} onChange={e => setCouponCode(e.target.value)} />
+                <button onClick={handleApplyCoupon} className="bg-white/5 text-white/70 font-black px-4 rounded-xl text-[10px] border border-white/10 tracking-widest uppercase hover:bg-white/10 transition">APLICAR</button>
             </div>
-            {couponMsg && <p className={`text-xs text-center font-bold ${appliedCoupon ? 'text-green-500' : 'text-red-500'}`}>{couponMsg}</p>}
+            {couponMsg && <p className={`text-[10px] text-center font-black uppercase tracking-widest ${appliedCoupon ? 'text-green-500' : 'text-[#E31B23]'}`}>{couponMsg}</p>}
 
-            <input type="text" placeholder="Tu Nombre" className="w-full p-3 bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-xl text-[#4A3B32] focus:border-red-600 outline-none transition-all" value={name} onChange={e => setName(e.target.value)} />
-            <input type="tel" placeholder="Tu WhatsApp" className="w-full p-3 bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-xl text-[#4A3B32] focus:border-red-600 outline-none transition-all" value={phone} onChange={e => setPhone(e.target.value)} />
+            <input type="text" placeholder="Tu Nombre" className="w-full p-4 bg-black border border-white/10 rounded-xl text-white focus:border-[#E31B23] outline-none transition-all placeholder-white/20 text-sm font-bold uppercase" value={name} onChange={e => setName(e.target.value)} />
+            <input type="tel" placeholder="Tu WhatsApp" className="w-full p-4 bg-black border border-white/10 rounded-xl text-white focus:border-[#E31B23] outline-none transition-all placeholder-white/20 text-sm font-bold uppercase" value={phone} onChange={e => setPhone(e.target.value)} />
             
-            <div className="flex bg-white rounded-xl p-1 border border-[#4A3B32]/20">
-                <button onClick={() => setDeliveryType('delivery')} className={`flex-1 py-3 rounded-lg text-sm font-bold transition-all ${deliveryType === 'delivery' ? 'bg-[#4A3B32] text-[#FAF7F2]' : 'text-[#4A3B32]/60'}`}><MapPin size={16} className="inline mr-1"/> ENVÍO</button>
-                <button onClick={() => setDeliveryType('pickup')} className={`flex-1 py-3 rounded-lg text-sm font-bold transition-all ${deliveryType === 'pickup' ? 'bg-[#4A3B32] text-[#FAF7F2]' : 'text-[#4A3B32]/60'}`}><Store size={16} className="inline mr-1"/> RETIRO</button>
+            <div className="flex bg-black rounded-xl p-1 border border-white/10">
+                <button onClick={() => setDeliveryType('delivery')} className={`flex-1 py-3 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all ${deliveryType === 'delivery' ? 'bg-[#E31B23] text-white shadow-lg' : 'text-white/40'}`}><MapPin size={14} className="inline mr-1 mb-0.5"/> ENVÍO</button>
+                <button onClick={() => setDeliveryType('pickup')} className={`flex-1 py-3 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all ${deliveryType === 'pickup' ? 'bg-[#E31B23] text-white shadow-lg' : 'text-white/40'}`}><Store size={14} className="inline mr-1 mb-0.5"/> RETIRO</button>
             </div>
 
             {deliveryType === 'delivery' && (
-                <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
+                <div className="space-y-4 animate-in fade-in zoom-in-95 duration-300">
                     <div className="flex gap-2">
-                        <input type="text" placeholder="Calle y Número" className="flex-1 p-3 bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-xl text-[#4A3B32] focus:border-red-600 outline-none transition-all" value={address} onChange={e => setAddress(e.target.value)} />
-                        <button onClick={handleSearchAddress} className="bg-[#4A3B32]/5 text-[#4A3B32] p-3 rounded-xl border border-[#4A3B32]/20 hover:bg-[#4A3B32]/10 transition-colors">{searchingMap ? <Loader2 className="animate-spin"/> : <Search />}</button>
+                        <input type="text" placeholder="Calle y Número (Ej: Rivadavia 123)" className="flex-1 p-4 bg-black border border-white/10 rounded-xl text-white focus:border-[#E31B23] outline-none transition-all placeholder-white/20 text-sm font-bold uppercase" value={address} onChange={e => setAddress(e.target.value)} />
+                        <button onClick={handleSearchAddress} className="bg-white/5 text-white p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">{searchingMap ? <Loader2 className="animate-spin" size={20}/> : <Search size={22} />}</button>
                     </div>
                     
-                    <div className="rounded-xl overflow-hidden border border-[#4A3B32]/10 h-40 ring-1 ring-white/5 relative">
+                    <div className="rounded-2xl overflow-hidden border border-white/10 h-48 ring-4 ring-black/50 relative shadow-2xl">
                         <MapPicker setLocation={setCoords} forcedCoords={forcedCoords} />
                     </div>
 
-                    <div className={`p-4 rounded-xl border transition-all ${coords ? 'bg-green-900/10 border-green-800/50' : 'bg-white border-[#4A3B32]/10'}`}>
+                    <div className={`p-4 rounded-2xl border transition-all ${coords ? 'bg-green-600/10 border-green-500/30' : 'bg-black/40 border-white/10'}`}>
                         {coords ? (
-                           <div className="flex justify-between items-center">
+                           <div className="flex justify-between items-center px-2">
                               <div>
-                                <p className="text-[10px] text-[#4A3B32]/70 font-bold uppercase tracking-widest mb-1">Costo de Envío</p>
-                                <p className="text-sm font-medium text-[#4A3B32]">Distancia: <span className="text-green-400 font-bold">{distanceKm.toFixed(1)} km</span></p>
+                                <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.2em] mb-1">Costo de Envío</p>
+                                <p className="text-xs font-bold text-white uppercase italic tracking-tighter">Distancia: <span className="text-green-500 font-black">{distanceKm.toFixed(1)} km</span></p>
                               </div>
-                              <span className="text-2xl font-black text-green-500">${deliveryCost}</span>
+                              <span className="text-3xl font-black text-green-500 tracking-tighter italic">${deliveryCost}</span>
                            </div>
                         ) : (
-                           <p className="text-xs text-[#4A3B32]/70 text-center font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                              <MapPin size={14} className="text-red-500 animate-bounce" /> Marcá tu ubicación en el mapa
+                           <p className="text-[10px] text-white/40 text-center font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 py-2">
+                              <MapPin size={14} className="text-[#E31B23] animate-bounce" /> Marcá tu ubicación en el mapa
                            </p>
                         )}
                     </div>
                 </div>
             )}
 
-            <select className="w-full p-3 bg-[#FAF7F2] border border-[#4A3B32]/20 rounded-xl text-[#4A3B32] focus:border-red-600 outline-none" value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
+            <select className="w-full p-4 bg-black border border-white/10 rounded-xl text-white focus:border-[#E31B23] outline-none font-bold uppercase text-xs tracking-widest cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23E31B23%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:12px_12px] bg-[right_1.5rem_center] bg-no-repeat" value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
                 <option value="efectivo">💵 Efectivo</option>
                 <option value="transferencia">🏦 Transferencia</option>
                 <option value="mercadopago">💳 Mercado Pago</option>
@@ -337,19 +337,19 @@ export default function CartModal({ isOpen, onClose }) {
         </div>
 
         {/* RESUMEN DE TOTALES */}
-        <div className="mt-6 pt-4 border-t border-[#4A3B32]/10 space-y-1">
-            <div className="flex justify-between text-[#4A3B32]/70 text-sm font-medium"><span>Subtotal</span><span>${subtotal}</span></div>
-            {deliveryType === 'delivery' && coords && <div className="flex justify-between text-[#4A3B32]/70 text-sm font-medium"><span>Envío</span><span>${deliveryCost}</span></div>}
-            {promoSavings > 0 && <div className="flex justify-between text-yellow-500 font-bold text-sm italic"><span>Ahorro Promos</span><span>-${promoSavings}</span></div>}
-            {discountAmount > 0 && <div className="flex justify-between text-green-500 font-bold text-sm"><span>Descuento Cupón</span><span>-${discountAmount}</span></div>}
-            <div className="flex justify-between text-2xl font-black text-[#4A3B32] pt-2 mb-4"><span>Total</span><span className="text-[#4A3B32]">${total}</span></div>
+        <div className="mt-8 pt-6 border-t border-white/10 space-y-2">
+            <div className="flex justify-between text-white/40 text-[10px] font-black uppercase tracking-widest px-1"><span>Subtotal</span><span>${subtotal}</span></div>
+            {deliveryType === 'delivery' && coords && <div className="flex justify-between text-white/40 text-[10px] font-black uppercase tracking-widest px-1"><span>Envío</span><span>${deliveryCost}</span></div>}
+            {promoSavings > 0 && <div className="flex justify-between text-[#E31B23] font-black text-xs uppercase italic tracking-widest px-1"><span>Ahorro Promos</span><span>-${promoSavings}</span></div>}
+            {discountAmount > 0 && <div className="flex justify-between text-green-500 font-black text-xs uppercase tracking-widest px-1"><span>Descuento Cupón</span><span>-${discountAmount}</span></div>}
+            <div className="flex justify-between text-4xl font-black text-white py-4 italic tracking-tighter"><span>TOTAL</span><span className="text-[#E31B23]">${total}</span></div>
             
-            <div className="space-y-3">
-                <button onClick={() => alert("MP En mantenimiento")} disabled={loading || cart.length === 0} className="w-full bg-blue-600 text-[#4A3B32] py-3 rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-blue-500 disabled:opacity-50 transition-all">
-                    <CreditCard size={20}/> PAGAR CON MERCADO PAGO
+            <div className="space-y-4 pt-2">
+                <button onClick={() => alert("MP En mantenimiento")} disabled={loading || cart.length === 0} className="w-full bg-blue-600/20 text-blue-400 py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] flex justify-center items-center gap-3 border border-blue-500/20 hover:bg-blue-600/30 transition-all opacity-50 cursor-not-allowed">
+                    <CreditCard size={18}/> PAGAR CON MERCADO PAGO
                 </button>
-                <button onClick={handleCheckout} disabled={loading || cart.length === 0 || (deliveryType === 'delivery' && !coords)} className="w-full bg-green-600 text-[#4A3B32] py-4 rounded-xl font-black flex justify-center items-center gap-2 hover:bg-green-500 disabled:opacity-50 shadow-lg shadow-green-900/20 transition-all uppercase tracking-widest text-sm">
-                    {loading ? <Loader2 className="animate-spin"/> : <><MessageCircle size={20}/> Enviar Pedido</>}
+                <button onClick={handleCheckout} disabled={loading || cart.length === 0 || (deliveryType === 'delivery' && !coords)} className="w-full bg-[#E31B23] hover:bg-[#C1121F] text-white py-5 rounded-2xl font-black flex justify-center items-center gap-3 transition-all uppercase tracking-[0.3em] text-sm shadow-2xl shadow-[#E31B23]/30 border-t border-white/20 active:scale-95 disabled:opacity-30">
+                    {loading ? <Loader2 className="animate-spin" size={24}/> : <><MessageCircle size={24}/> ENVIAR PEDIDO</>}
                 </button>
             </div>
         </div>
