@@ -65,11 +65,11 @@ export default function AdminBannerForm({ onCancel, onSaved }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#FAF7F2]/80 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-white w-full max-w-md rounded-2xl border border-[#4A3B32]/10 shadow-2xl flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
+      <div className="bg-[#1A1A1A] w-full max-w-md rounded-2xl border border-white/10 shadow-2xl flex flex-col">
 
-        <div className="flex justify-between items-center p-6 border-b border-white/10">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+        <div className="flex justify-between items-center p-6 border-b border-white/5">
+          <h2 className="text-xl font-black italic tracking-tighter text-white flex items-center gap-2 uppercase">
             <ImageIcon size={20} className="text-[#E31B23]" /> Nuevo Banner
           </h2>
           <button type="button" onClick={onCancel} className="text-white/70 hover:text-white transition-colors"><X /></button>
@@ -109,24 +109,24 @@ export default function AdminBannerForm({ onCancel, onSaved }) {
               type="text"
               value={title}
               onChange={e => setTitle(e.target.value)}
-              className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-[#E31B23] placeholder-gray-700"
+              className="w-full bg-black border border-white/10 rounded-xl p-3.5 text-white outline-none focus:ring-2 focus:ring-[#E31B23] transition-all placeholder-white/20 font-bold"
               placeholder="Ej: 2x1 Jueves..."
             />
           </div>
 
           {/* Footer dentro del form para que type="submit" funcione correctamente */}
-          <div className="pt-4 border-t border-white/10 flex justify-end gap-3">
+          <div className="pt-4 border-t border-white/5 flex justify-end gap-3">
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 rounded-lg font-bold text-white/50 hover:text-white transition-colors text-sm uppercase"
+              className="px-4 py-2.5 rounded-xl font-bold text-white/40 hover:text-white transition-all text-xs uppercase tracking-widest"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={loading || uploading || !imageUrl}
-              className="px-6 py-2 rounded-lg font-bold bg-[#E31B23] text-white hover:bg-[#C1121F] transition shadow-lg flex items-center gap-2 text-sm disabled:opacity-50 uppercase tracking-widest"
+              className="px-8 py-2.5 rounded-xl font-black bg-[#E31B23] text-white hover:bg-white hover:text-[#E31B23] transition-all shadow-lg flex items-center gap-2 text-xs disabled:opacity-30 uppercase tracking-[0.2em]"
             >
               {loading ? <Loader2 className="animate-spin" size={16} /> : <><Save size={16} /> Publicar</>}
             </button>

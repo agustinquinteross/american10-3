@@ -246,9 +246,9 @@ export default function Home() {
           <div className="flex justify-center py-20"><Loader2 className="animate-spin text-[#E31B23]" size={40} /></div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
               {filteredProducts.map(product => (
-                <div key={product.id} onClick={() => product.stock !== 0 && setSelectedProduct(product)} className={`bg-[#1A1A1A] border border-white/10 rounded-2xl overflow-hidden transition-all group relative ${product.stock === 0 ? 'opacity-75 cursor-not-allowed grayscale-[0.2]' : 'hover:border-[#E31B23]/30 cursor-pointer shadow-sm hover:shadow-md'}`}>
+                <div key={product.id} onClick={() => product.stock !== 0 && setSelectedProduct(product)} className={`bg-transparent border-l-2 border-[#E31B23]/20 hover:border-[#E31B23] overflow-hidden transition-all duration-500 group relative ${product.stock === 0 ? 'opacity-75 cursor-not-allowed grayscale-[0.2]' : 'cursor-pointer hover:bg-white/[0.02]'}`}>
 
                   {/* 🔥 CONTENEDOR DE ETIQUETAS 🔥 */}
                   <div className="absolute top-2 left-2 z-20 flex flex-col items-start gap-1.5">
@@ -288,18 +288,20 @@ export default function Home() {
                     })}
                   </div>
 
-                  <div className="h-48 overflow-hidden relative">
+                  <div className="h-36 sm:h-52 overflow-hidden relative rounded-2xl sm:rounded-[32px] mb-4">
                     {product.image_url ? (
-                      <img src={product.image_url} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <img src={product.image_url} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                     ) : (
                       <div className="w-full h-full bg-white/5 flex items-center justify-center text-4xl">🍕</div>
                     )}
-                    <div className="absolute bottom-2 right-2 bg-black/80 backdrop-blur text-white px-3 py-1 rounded-lg font-bold border border-white/20">${product.price}</div>
+                    <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-xl font-black border border-white/10 text-xs sm:text-lg italic tracking-tighter shadow-2xl">${product.price}</div>
                   </div>
-                  <div className="p-4">
-                    <h3 className="text-2xl font-serif text-white mb-1 leading-tight">{product.name}</h3>
-                    <p className="text-sm text-white/70 line-clamp-2">{product.description}</p>
-                    <button className="mt-4 w-full bg-transparent border border-[#E31B23] hover:bg-[#E31B23] text-[#E31B23] hover:text-white font-bold uppercase tracking-widest text-xs py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2">Ver Detalles</button>
+                  <div className="pl-4 pr-2 pb-2">
+                    <h3 className="text-base sm:text-2xl font-black text-white mb-1 uppercase italic tracking-tighter leading-none group-hover:text-[#E31B23] transition-colors">{product.name}</h3>
+                    <p className="text-[10px] sm:text-sm text-white/40 font-medium line-clamp-1 sm:line-clamp-2 mb-4 uppercase tracking-wider">{product.description}</p>
+                    <div className="flex items-center gap-2 text-[#E31B23] font-black text-[9px] sm:text-xs uppercase tracking-[0.2em] italic group-hover:translate-x-2 transition-transform">
+                      Ver Detalles <Zap size={12} className="fill-[#E31B23]" />
+                    </div>
                   </div>
                 </div>
               ))}

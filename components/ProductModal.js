@@ -126,10 +126,10 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
 
-      <div className="bg-[#1A1A1A] w-full max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] border border-white/10 text-white">
+      <div className="bg-[#1A1A1A] w-full max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[95vh] sm:max-h-[90vh] border border-white/10 text-white">
 
         {/* Imagen Header */}
-        <div className="relative h-48 sm:h-56 bg-black shrink-0">
+        <div className="relative h-40 sm:h-56 bg-black shrink-0">
           {product.image_url ? (
             <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
           ) : (
@@ -146,12 +146,12 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
         </div>
 
         {/* Scroll Content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#1A1A1A] custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 sm:space-y-6 bg-[#1A1A1A] custom-scrollbar">
 
           {/* Info Producto */}
           <div>
             <div className="flex justify-between items-start mb-2">
-              <h2 className="text-3xl font-black text-white uppercase italic tracking-tighter leading-none">{product.name}</h2>
+              <h2 className="text-2xl sm:text-3xl font-black text-white uppercase italic tracking-tighter leading-none">{product.name}</h2>
               {product.stock !== null && product.stock !== undefined && (
                 <span className={`text-[10px] font-black px-2 py-1 rounded border uppercase tracking-widest ${product.stock <= 0 ? 'bg-[#E31B23] text-white border-[#E31B23]' : product.stock <= 5 ? 'bg-orange-500 text-white border-orange-500 animate-pulse' : 'bg-green-600/20 text-green-500 border-green-600/30'}`}>
                   {product.stock <= 0 ? 'Agotado' : product.stock <= 5 ? `¡Casi Agotado! (${product.stock})` : `En Stock: ${product.stock}`}
@@ -228,7 +228,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
         </div>
 
         {/* Footer */}
-        <div className="p-6 bg-[#1A1A1A] border-t border-white/10 z-10 shrink-0">
+        <div className="p-4 sm:p-6 bg-[#1A1A1A] border-t border-white/10 z-10 shrink-0">
           <div className="flex items-center gap-4">
             <div className="flex items-center bg-black border border-white/10 rounded-xl p-1 shrink-0">
               <button
@@ -252,7 +252,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
               type="button"
               onClick={handleAddToOrder}
               disabled={product.stock === 0}
-              className="flex-1 bg-[#E31B23] hover:bg-[#C1121F] text-white font-black py-4 rounded-xl text-lg flex justify-between px-6 shadow-2xl shadow-[#E31B23]/20 transition-all active:scale-95 border-t border-white/20 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed uppercase tracking-widest"
+              className="flex-1 bg-[#E31B23] hover:bg-[#C1121F] text-white font-black py-3.5 sm:py-4 rounded-xl text-base sm:text-lg flex justify-between px-5 sm:px-6 shadow-2xl shadow-[#E31B23]/20 transition-all active:scale-95 border-t border-white/20 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed uppercase tracking-widest"
             >
               <span>{product.stock === 0 ? 'AGOTADO' : 'AGREGAR'}</span>
               <span>${totalDisplay}</span>

@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase'
 import { X, Loader2, MapPin, Store, Search, Trash2, Ticket, CreditCard, MessageCircle, Wallet, Gift } from 'lucide-react'
 import dynamic from 'next/dynamic'
 
-const MapPicker = dynamic(() => import('./MapPicker'), { ssr: false, loading: () => <div className="h-40 bg-[#4A3B32]/5 animate-pulse rounded-xl"/> })
+const MapPicker = dynamic(() => import('./MapPicker'), { ssr: false, loading: () => <div className="h-40 bg-white/5 animate-pulse rounded-xl"/> })
 
 // 📍 COORDENADAS EXACTAS DE GUSTO
 const RESTAURANT_COORDS = { lat: -28.467833, lng: -65.773611 }
@@ -238,37 +238,37 @@ export default function CartModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/80 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-[#1A1A1A] w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 max-h-[95vh] overflow-y-auto shadow-2xl border border-white/10 text-white no-scrollbar">
+      <div className="bg-[#1A1A1A] w-full max-w-md rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 max-h-[92vh] overflow-y-auto shadow-2xl border border-white/10 text-white no-scrollbar">
         
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-black text-white italic tracking-tighter uppercase">Tu Pedido</h2>
-          <button onClick={onClose} className="p-2 bg-white/5 rounded-full hover:bg-white/10 text-white"><X size={20} /></button>
+        <div className="flex justify-between items-center mb-4 sm:mb-6">
+          <h2 className="text-xl sm:text-2xl font-black text-white italic tracking-tighter uppercase">Tu Pedido</h2>
+          <button onClick={onClose} className="p-1 sm:p-2 bg-white/5 rounded-full hover:bg-white/10 text-white"><X size={18} /></button>
         </div>
 
         {/* LISTA DE PRODUCTOS */}
         <div className="space-y-3 mb-6 pr-1">
           {cart.length === 0 ? (
-            <p className="text-center text-[#4A3B32]/60 py-4">Carrito vacío</p>
+            <p className="text-center text-white/30 py-4 font-bold uppercase text-[10px] tracking-widest">Carrito vacío</p>
           ) : cart.map((item, index) => {
             const itemSavings = getItemPromoSavings(item)
             const hasPromo = item.special_offers && item.special_offers.is_active !== false
             return (
-              <div key={index} className={`flex justify-between items-start p-3 rounded-xl border transition-all ${hasPromo ? 'bg-yellow-900/10 border-yellow-800/50' : 'bg-[#FAF7F2]/40 border-[#4A3B32]/10'}`}>
+              <div key={index} className={`flex justify-between items-start p-3 rounded-xl border transition-all ${hasPromo ? 'bg-yellow-900/10 border-yellow-800/50' : 'bg-white/5 border-white/10 hover:bg-white/[0.07]'}`}>
                 <div className="flex gap-3 flex-1 min-w-0">
                   <div className="text-red-500 font-bold mt-0.5 shrink-0">{item.quantity}x</div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <p className="font-bold text-[#4A3B32] leading-tight">{item.name}</p>
+                      <p className="font-bold text-white leading-tight">{item.name}</p>
                       {hasPromo && (
                         <span className="flex items-center gap-1 text-[9px] font-black text-yellow-400 bg-yellow-900/30 border border-yellow-800/50 px-1.5 py-0.5 rounded-full uppercase tracking-wide">
                           <Gift size={9} className="shrink-0"/> {item.special_offers.discount_value}
                         </span>
                       )}
                     </div>
-                    {item.selectedOptions?.length > 0 && <p className="text-xs text-[#4A3B32]/70 mt-0.5">+ {getOptionsString(item)}</p>}
+                    {item.selectedOptions?.length > 0 && <p className="text-xs text-white/50 mt-0.5">+ {getOptionsString(item)}</p>}
                     {item.note && <p className="text-[10px] text-yellow-500 italic mt-1 bg-yellow-900/10 px-2 py-0.5 rounded border border-yellow-900/30">📝 {item.note}</p>}
                     <div className="flex items-center gap-2 mt-1">
-                      <p className={`font-bold text-sm ${hasPromo ? 'line-through text-[#4A3B32]/60' : 'text-[#4A3B32]/70'}`}>${Math.round(item.price * item.quantity).toLocaleString('es-AR')}</p>
+                      <p className={`font-bold text-sm ${hasPromo ? 'line-through text-white/40' : 'text-white/60'}`}>${Math.round(item.price * item.quantity).toLocaleString('es-AR')}</p>
                       {itemSavings > 0 && (
                         <p className="text-yellow-400 font-black text-sm">
                           ${Math.round((item.price * item.quantity) - itemSavings).toLocaleString('es-AR')}
@@ -278,7 +278,7 @@ export default function CartModal({ isOpen, onClose }) {
                     </div>
                   </div>
                 </div>
-                <button onClick={() => removeFromCart(item.cartItemId)} className="text-[#4A3B32]/50 hover:text-red-500 p-1 transition-colors shrink-0 ml-2"><Trash2 size={16}/></button>
+                <button onClick={() => removeFromCart(item.cartItemId)} className="text-white/30 hover:text-[#E31B23] p-1 transition-colors shrink-0 ml-2"><Trash2 size={16}/></button>
               </div>
             )
           })}
@@ -296,8 +296,8 @@ export default function CartModal({ isOpen, onClose }) {
             <input type="tel" placeholder="Tu WhatsApp" className="w-full p-4 bg-black border border-white/10 rounded-xl text-white focus:border-[#E31B23] outline-none transition-all placeholder-white/20 text-sm font-bold uppercase" value={phone} onChange={e => setPhone(e.target.value)} />
             
             <div className="flex bg-black rounded-xl p-1 border border-white/10">
-                <button onClick={() => setDeliveryType('delivery')} className={`flex-1 py-3 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all ${deliveryType === 'delivery' ? 'bg-[#E31B23] text-white shadow-lg' : 'text-white/40'}`}><MapPin size={14} className="inline mr-1 mb-0.5"/> ENVÍO</button>
-                <button onClick={() => setDeliveryType('pickup')} className={`flex-1 py-3 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all ${deliveryType === 'pickup' ? 'bg-[#E31B23] text-white shadow-lg' : 'text-white/40'}`}><Store size={14} className="inline mr-1 mb-0.5"/> RETIRO</button>
+                <button onClick={() => setDeliveryType('delivery')} className={`flex-1 py-2 sm:py-3 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all ${deliveryType === 'delivery' ? 'bg-[#E31B23] text-white shadow-lg' : 'text-white/40'}`}><MapPin size={12} className="inline mr-1 mb-0.5"/> ENVÍO</button>
+                <button onClick={() => setDeliveryType('pickup')} className={`flex-1 py-2 sm:py-3 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all ${deliveryType === 'pickup' ? 'bg-[#E31B23] text-white shadow-lg' : 'text-white/40'}`}><Store size={12} className="inline mr-1 mb-0.5"/> RETIRO</button>
             </div>
 
             {deliveryType === 'delivery' && (
@@ -307,7 +307,7 @@ export default function CartModal({ isOpen, onClose }) {
                         <button onClick={handleSearchAddress} className="bg-white/5 text-white p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">{searchingMap ? <Loader2 className="animate-spin" size={20}/> : <Search size={22} />}</button>
                     </div>
                     
-                    <div className="rounded-2xl overflow-hidden border border-white/10 h-48 ring-4 ring-black/50 relative shadow-2xl">
+                    <div className="rounded-2xl overflow-hidden border border-white/10 h-32 sm:h-48 ring-4 ring-black/50 relative shadow-2xl">
                         <MapPicker setLocation={setCoords} forcedCoords={forcedCoords} />
                     </div>
 
@@ -342,7 +342,7 @@ export default function CartModal({ isOpen, onClose }) {
             {deliveryType === 'delivery' && coords && <div className="flex justify-between text-white/40 text-[10px] font-black uppercase tracking-widest px-1"><span>Envío</span><span>${deliveryCost}</span></div>}
             {promoSavings > 0 && <div className="flex justify-between text-[#E31B23] font-black text-xs uppercase italic tracking-widest px-1"><span>Ahorro Promos</span><span>-${promoSavings}</span></div>}
             {discountAmount > 0 && <div className="flex justify-between text-green-500 font-black text-xs uppercase tracking-widest px-1"><span>Descuento Cupón</span><span>-${discountAmount}</span></div>}
-            <div className="flex justify-between text-4xl font-black text-white py-4 italic tracking-tighter"><span>TOTAL</span><span className="text-[#E31B23]">${total}</span></div>
+            <div className="flex justify-between text-2xl sm:text-4xl font-black text-white py-2 sm:py-4 italic tracking-tighter"><span>TOTAL</span><span className="text-[#E31B23]">${total}</span></div>
             
             <div className="space-y-4 pt-2">
                 <button onClick={() => alert("MP En mantenimiento")} disabled={loading || cart.length === 0} className="w-full bg-blue-600/20 text-blue-400 py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] flex justify-center items-center gap-3 border border-blue-500/20 hover:bg-blue-600/30 transition-all opacity-50 cursor-not-allowed">

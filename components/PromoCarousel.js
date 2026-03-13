@@ -102,8 +102,8 @@ export default function PromoCarousel() {
   }
 
   if (loading) return (
-    <div className="h-40 sm:h-64 bg-white animate-pulse rounded-2xl mx-4 mt-6 flex items-center justify-center">
-      <Loader2 className="animate-spin text-[#4A3B32]/40" />
+    <div className="h-40 sm:h-64 bg-[#1A1A1A] animate-pulse rounded-2xl mx-4 mt-6 flex items-center justify-center border border-white/5">
+      <Loader2 className="animate-spin text-[#E31B23]" />
     </div>
   )
 
@@ -111,7 +111,7 @@ export default function PromoCarousel() {
 
   return (
     <div className="relative group w-full max-w-6xl mx-auto px-4 mt-6">
-      <div className="relative w-full aspect-video md:aspect-[21/9] lg:aspect-[3/1] overflow-hidden rounded-2xl shadow-2xl border border-[#4A3B32]/10">
+      <div className="relative w-full aspect-video md:aspect-[21/9] lg:aspect-[3/1] overflow-hidden rounded-2xl shadow-2xl border border-white/10">
 
         {/* Imágenes */}
         <div
@@ -119,7 +119,7 @@ export default function PromoCarousel() {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {banners.map((banner) => (
-            <div key={banner.id} className="min-w-full h-full relative bg-[#4A3B32]">
+            <div key={banner.id} className="min-w-full h-full relative bg-[#0A0A0A]">
               <img
                 src={banner.image_url}
                 alt={banner.title || 'Promo'}
@@ -127,7 +127,7 @@ export default function PromoCarousel() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
                 {banner.title && (
-                  <h2 className="text-[#4A3B32] font-black text-xl sm:text-3xl italic tracking-tighter drop-shadow-lg">
+                  <h2 className="text-white font-black text-xl sm:text-3xl italic tracking-tighter drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
                     {banner.title}
                   </h2>
                 )}
@@ -141,14 +141,14 @@ export default function PromoCarousel() {
           <button
             type="button"
             onClick={() => handleManualNav(prevSlide)}
-            className="absolute top-1/2 left-4 -translate-y-1/2 bg-[#FAF7F2]/50 hover:bg-[#4A3B32] text-[#4A3B32] p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all"
+            className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/40 hover:bg-[#E31B23] text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all backdrop-blur-sm border border-white/10"
           >
             <ChevronLeft size={24} />
           </button>
           <button
             type="button"
             onClick={() => handleManualNav(nextSlide)}
-            className="absolute top-1/2 right-4 -translate-y-1/2 bg-[#FAF7F2]/50 hover:bg-[#4A3B32] text-[#4A3B32] p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all"
+            className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/40 hover:bg-[#E31B23] text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all backdrop-blur-sm border border-white/10"
           >
             <ChevronRight size={24} />
           </button>
@@ -161,7 +161,7 @@ export default function PromoCarousel() {
               type="button"
               key={index}
               onClick={() => handleManualNav(() => setCurrentIndex(index))}
-              className={`w-2 h-2 rounded-full transition-all ${currentIndex === index ? 'bg-[#4A3B32] w-6' : 'bg-white/50 hover:bg-white'}`}
+              className={`w-2 h-2 rounded-full transition-all ${currentIndex === index ? 'bg-[#E31B23] w-6' : 'bg-white/30 hover:bg-white'}`}
             />
           ))}
         </div>
