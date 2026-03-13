@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Search, Lock, MapPin, Phone, Instagram, Loader2, ShoppingCart, Clock, Zap, Gift } from 'lucide-react'
 
 // --- COMPONENTES ---
@@ -9,6 +10,18 @@ import ProductModal from '../components/ProductModal'
 import CartModal from '../components/CartModal'
 import PromoCarousel from '../components/PromoCarousel'
 import { useCart } from '../store/useCart'
+
+// --- SKELETON UI ---
+const ProductSkeleton = () => (
+  <div className="bg-transparent border-none overflow-hidden animate-pulse">
+    <div className="h-36 sm:h-52 w-full bg-white/5 rounded-2xl sm:rounded-[32px] mb-4" />
+    <div className="pl-4 pr-2 pb-2 space-y-3">
+      <div className="h-6 sm:h-8 bg-white/10 rounded-lg w-3/4" />
+      <div className="h-3 sm:h-4 bg-white/5 rounded-lg w-1/2" />
+      <div className="h-3 sm:h-4 bg-white/5 rounded-lg w-1/4" />
+    </div>
+  </div>
+)
 
 export default function Home() {
   // --- ESTADOS DE DATOS ---
@@ -174,8 +187,8 @@ export default function Home() {
         
         <div className="relative z-10 flex flex-col items-center">
           {/* Logo animado lentamente */}
-          <div className="mb-8 hover:scale-105 transition-transform duration-700">
-             <img src="/logo.png" alt="American Pizza" className="w-56 sm:w-64 object-contain drop-shadow-xl" />
+          <div className="mb-8 hover:scale-105 transition-transform duration-700 relative">
+             <Image src="/logo.png" alt="American Pizza" width={256} height={200} className="w-56 sm:w-64 object-contain drop-shadow-xl" />
           </div>
           
           <h1 className="text-4xl sm:text-5xl font-black italic tracking-tighter mb-4 text-[#E31B23]">CERRADO</h1>
@@ -205,7 +218,7 @@ export default function Home() {
             50% { transform: translateY(-6px); }
           }
         `}} />
-        <img src="/logo.png" alt="American Pizza" className="w-full max-w-[260px] px-4 object-contain drop-shadow-xl select-none" style={{ animation: 'gentleFloat 4s ease-in-out infinite' }} />
+        <Image src="/logo.png" alt="American Pizza" width={260} height={200} priority className="w-full max-w-[260px] px-4 object-contain drop-shadow-xl select-none" style={{ animation: 'gentleFloat 4s ease-in-out infinite' }} />
       </div>
 
       {/* BARRA DE NAVEGACIÓN STICKY */}
@@ -243,12 +256,14 @@ export default function Home() {
       {/* GRILLA DE PRODUCTOS */}
       <main className="max-w-6xl mx-auto p-4 sm:p-6">
         {loading ? (
-          <div className="flex justify-center py-20"><Loader2 className="animate-spin text-[#E31B23]" size={40} /></div>
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+                {[1,2,3,4,5,6].map(i => <ProductSkeleton key={i} />)}
+            </div>
         ) : (
           <>
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
               {filteredProducts.map(product => (
-                <div key={product.id} onClick={() => product.stock !== 0 && setSelectedProduct(product)} className={`bg-transparent border-l-2 border-[#E31B23]/20 hover:border-[#E31B23] overflow-hidden transition-all duration-500 group relative ${product.stock === 0 ? 'opacity-75 cursor-not-allowed grayscale-[0.2]' : 'cursor-pointer hover:bg-white/[0.02]'}`}>
+                <div key={product.id} onClick={() => product.stock !== 0 && setSelectedProduct(product)} className={`bg-transparent border-none overflow-hidden transition-all duration-500 group relative ${product.stock === 0 ? 'opacity-75 cursor-not-allowed grayscale-[0.2]' : 'cursor-pointer hover:bg-white/[0.02]'}`}>
 
                   {/* 🔥 CONTENEDOR DE ETIQUETAS 🔥 */}
                   <div className="absolute top-2 left-2 z-20 flex flex-col items-start gap-1.5">
@@ -288,13 +303,19 @@ export default function Home() {
                     })}
                   </div>
 
-                  <div className="h-36 sm:h-52 overflow-hidden relative rounded-2xl sm:rounded-[32px] mb-4">
+                  <div className="h-36 sm:h-52 overflow-hidden relative rounded-2xl sm:rounded-[32px] mb-4 bg-white/5">
                     {product.image_url ? (
-                      <img src={product.image_url} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                      <Image 
+                        src={product.image_url} 
+                        alt={product.name} 
+                        fill
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                        className="object-cover group-hover:scale-110 transition-transform duration-700" 
+                      />
                     ) : (
-                      <div className="w-full h-full bg-white/5 flex items-center justify-center text-4xl">🍕</div>
+                      <div className="w-full h-full flex items-center justify-center text-4xl">🍕</div>
                     )}
-                    <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-xl font-black border border-white/10 text-xs sm:text-lg italic tracking-tighter shadow-2xl">${product.price}</div>
+                    <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-xl font-black border border-white/10 text-xs sm:text-lg italic tracking-tighter shadow-2xl z-20">${product.price}</div>
                   </div>
                   <div className="pl-4 pr-2 pb-2">
                     <h3 className="text-base sm:text-2xl font-black text-white mb-1 uppercase italic tracking-tighter leading-none group-hover:text-[#E31B23] transition-colors">{product.name}</h3>
@@ -315,7 +336,7 @@ export default function Home() {
       <footer className="bg-black text-white border-t border-white/10 mt-12 py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-10">
           <div className="text-center md:text-left">
-            <img src="/logo.png" alt="American Pizza" className="h-20 w-auto opacity-90 mx-auto md:mx-0 object-contain" />
+            <Image src="/logo.png" alt="American Pizza" width={80} height={80} className="h-20 w-auto opacity-90 mx-auto md:mx-0 object-contain" />
             <p className="text-white/80 font-medium text-sm mt-4">El verdadero sabor,<br />directo a donde estés.</p>
           </div>
 
@@ -325,7 +346,7 @@ export default function Home() {
               <p className="text-white/60 text-xs uppercase tracking-widest">Lunes a Lunes • 15:00 a 20:30</p>
             </div>
             <div className="flex gap-4">
-              <a href="https://www.instagram.com/gusto.ok/" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 rounded-full text-white hover:bg-[#E31B23] hover:text-white transition" title="Instagram">
+              <a href="#" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 rounded-full text-white hover:bg-[#E31B23] hover:text-white transition" title="Instagram">
                 <Instagram size={20} />
               </a>
               <a href="https://wa.me/qr/YIQG3BJC7FFUC1" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 rounded-full text-white hover:bg-[#E31B23] hover:text-white transition" title="WhatsApp">

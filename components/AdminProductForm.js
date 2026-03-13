@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { supabase } from '../lib/supabase'
 import { X, Save, Upload, Loader2, Layers, Image as ImageIcon, Zap, Gift, Plus } from 'lucide-react'
 
@@ -116,13 +117,25 @@ export default function AdminProductForm({ productToEdit, onCancel, onSaved }) {
           <button type="button" onClick={onCancel} className="text-white/70 hover:text-white transition-colors"><X /></button>
         </div>
 
-        <div className="p-6 space-y-6 overflow-y-auto no-scrollbar flex-1">
+        <div className="p-4 sm:p-6 space-y-5 sm:space-y-6 overflow-y-auto no-scrollbar flex-1">
             <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                     <div className="space-y-2">
                         <label className="text-xs font-bold text-white/50 uppercase tracking-widest">Foto</label>
                         <div className="relative overflow-hidden bg-black border border-white/20 rounded-xl aspect-square flex items-center justify-center group cursor-pointer hover:border-[#E31B23]/40 transition">
-                            {imageUrl ? <img src={imageUrl} className="w-full h-full object-cover" alt="Preview" /> : <div className="text-white/40 flex flex-col items-center">{uploading ? <Loader2 className="animate-spin mb-2"/> : <Upload size={32} className="mb-2"/>}<span className="text-xs font-bold uppercase">Subir Foto</span></div>}
+                            {imageUrl ? (
+                                <Image 
+                                    src={imageUrl} 
+                                    fill 
+                                    className="object-cover" 
+                                    alt="Preview" 
+                                />
+                            ) : (
+                                <div className="text-white/40 flex flex-col items-center">
+                                    {uploading ? <Loader2 className="animate-spin mb-2"/> : <Upload size={32} className="mb-2"/>}
+                                    <span className="text-xs font-bold uppercase">Subir Foto</span>
+                                </div>
+                            )}
                             <input type="file" accept="image/*" onChange={handleImageUpload} className="absolute inset-0 opacity-0 cursor-pointer" disabled={uploading} />
                         </div>
                     </div>
@@ -147,7 +160,7 @@ export default function AdminProductForm({ productToEdit, onCancel, onSaved }) {
                 </div>
                 <div className="space-y-4">
                     <div className="space-y-1"><label className="text-xs font-bold text-white/50 uppercase tracking-widest">Nombre</label><input type="text" value={name} onChange={e => setName(e.target.value)} className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-[#E31B23] font-bold" /></div>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                         <div className="space-y-1"><label className="text-xs font-bold text-white/50 uppercase tracking-widest">Venta</label><input type="number" step="0.01" value={price} onChange={e => setPrice(e.target.value)} className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-[#E31B23] font-black" /></div>
                         <div className="space-y-1"><label className="text-xs font-bold text-white/50 uppercase tracking-widest">Costo</label><input type="number" step="0.01" value={costPrice} onChange={e => setCostPrice(e.target.value)} className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-[#E31B23] font-black" placeholder="0.00" /></div>
                         <div className="space-y-1"><label className="text-xs font-bold text-white/50 uppercase tracking-widest">Stock</label><input type="number" step="1" value={stock} onChange={e => setStock(e.target.value)} className="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none focus:border-[#E31B23] font-black" placeholder="Ilimitado" /></div>
@@ -158,7 +171,7 @@ export default function AdminProductForm({ productToEdit, onCancel, onSaved }) {
                 </div>
             </div>
         </div>
-        <div className="p-6 border-t border-white/10 flex justify-end gap-3 bg-[#1A1A1A] z-10">
+        <div className="p-4 sm:p-6 border-t border-white/10 flex justify-end gap-3 bg-[#1A1A1A] z-10">
             <button type="button" onClick={onCancel} className="px-4 py-2 font-bold text-white/50 hover:text-white transition-colors text-xs uppercase">Cancelar</button>
             <button onClick={handleSave} disabled={loading || uploading} className="px-8 py-3 bg-[#E31B23] text-white rounded-xl font-black text-xs uppercase hover:bg-black transition shadow-lg flex items-center gap-2 disabled:opacity-50 tracking-widest">{loading ? <Loader2 className="animate-spin" size={16}/> : <Save size={16}/>}<span>Confirmar</span></button>
         </div>

@@ -8,16 +8,28 @@ import AdminGroupForm from '../../components/AdminGroupForm'
 import AdminCouponForm from '../../components/AdminCouponForm' 
 import AdminBannerForm from '../../components/AdminBannerForm'
 import AdminOfferForm from '../../components/AdminOfferForm'
-import DashboardMetrics from '@/components/metrics/DashboardMetrics'; 
+import dynamic from 'next/dynamic'
+const DashboardMetrics = dynamic(() => import('@/components/metrics/DashboardMetrics'), { 
+    ssr: false, 
+    loading: () => <div className="h-[400px] w-full bg-[#1A1A1A] animate-pulse rounded-[32px] flex items-center justify-center text-white/20 font-black uppercase tracking-[0.5em] border border-white/5">Cargando Inteligencia...</div> 
+});
 import AdminCategoryForm from '../../components/AdminCategoryForm'
+import AdminTableMap from '../../components/AdminTableMap'
+import TableSessionModal from '../../components/TableSessionModal'
+import AdminZoneForm from '../../components/AdminZoneForm'
+import AdminTableForm from '../../components/AdminTableForm'
+import AdminTableManagement from '../../components/AdminTableManagement'
 
+import Link from 'next/link'
+import Image from 'next/image'
 import { 
   Loader2, Power, LogOut, RefreshCw, ShoppingBag, Utensils, 
   Plus, Trash2, Layers, Ticket, MapPin, Edit, X, Calendar, 
   Hash, Megaphone, Lock, Unlock, CheckCircle, Clock, Truck, 
   MessageCircle, CreditCard, Wallet, AlertCircle, GripVertical, Printer, Zap,
   TrendingUp, Search, FolderPlus,
-  Settings, Save, Phone, LayoutDashboard, Image as ImageIcon, UploadCloud
+  Settings, Save, Phone, LayoutDashboard, Image as ImageIcon, UploadCloud,
+  ChevronRight, Check, Coffee, Monitor, Smartphone, User
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -57,6 +69,9 @@ export default function AdminPage() {
   const [coupons, setCoupons] = useState([])
   const [banners, setBanners] = useState([])
   const [offers, setOffers] = useState([])
+  const [zones, setZones] = useState([])
+  const [tables, setTables] = useState([])
+  const [waiters, setWaiters] = useState([])
 
   // --- BUSQUEDA Y FILTROS ---
   const [searchTerm, setSearchTerm] = useState('')
@@ -72,6 +87,13 @@ export default function AdminPage() {
   const [couponToEdit, setCouponToEdit] = useState(null)
   const [showBannerModal, setShowBannerModal] = useState(false)
   const [showOfferModal, setShowOfferModal] = useState(false)
+  const [selectedTable, setSelectedTable] = useState(null)
+  const [showSessionModal, setShowSessionModal] = useState(false)
+  const [showZoneModal, setShowZoneModal] = useState(false)
+  const [showTableFormModal, setShowTableFormModal] = useState(false)
+  const [currentZoneId, setCurrentZoneId] = useState(null)
+  const [designMode, setDesignMode] = useState(false)
+  const [showManagementView, setShowManagementView] = useState(false)
 
   // --- EXTRAS ---
   const [selectedGroupId, setSelectedGroupId] = useState(null) 
@@ -86,7 +108,8 @@ export default function AdminPage() {
     try {
         await Promise.all([
             fetchStoreConfig(), fetchCategories(), fetchModifiers(),
-            fetchProducts(), fetchOrders(), fetchCoupons(), fetchBanners(), fetchOffers()
+            fetchProducts(), fetchOrders(), fetchCoupons(), fetchBanners(), fetchOffers(),
+            fetchZones(), fetchTables(), fetchWaiters()
         ])
     } catch (error) { console.error("Error cargando datos:", error) }
     setLoading(false)
@@ -164,7 +187,10 @@ export default function AdminPage() {
   const fetchCoupons = async () => { const { data } = await supabase.from('coupons').select('*').order('created_at', { ascending: false }); setCoupons(data || []) }
   const fetchBanners = async () => { const { data } = await supabase.from('banners').select('*').order('id', { ascending: false }); setBanners(data || []) }
   const fetchOffers = async () => { const { data } = await supabase.from('special_offers').select('*').order('id', { ascending: false }); setOffers(data || []) }
+  const fetchZones = async () => { const { data } = await supabase.from('restaurant_zones').select('*'); setZones(data || []) }
+  const fetchTables = async () => { const { data } = await supabase.from('restaurant_tables').select('*, restaurant_zones(name)'); setTables(data || []) }
   const fetchGroupOptions = async (groupId) => { const { data } = await supabase.from('modifier_options').select('*').eq('group_id', groupId).order('id'); setGroupOptions(data || []); setSelectedGroupId(groupId) }
+  const fetchWaiters = async () => { const { data } = await supabase.from('waiters').select('*').order('name'); setWaiters(data || []) }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -188,7 +214,7 @@ export default function AdminPage() {
 
           if (typeof window !== 'undefined' && 'Notification' in window) {
               if (Notification.permission === "granted") {
-                  new Notification("Gusto | ¡NUEVO PEDIDO!", { body: `Ingresó un pedido de ${payload.new.customer_name} por $${payload.new.total}` })
+                  new Notification("American Pizza | ¡NUEVO PEDIDO!", { body: `Ingresó un pedido de ${payload.new.customer_name} por $${payload.new.total}` })
               }
           }
         }
@@ -232,7 +258,7 @@ export default function AdminPage() {
           </style>
         </head>
         <body>
-          <div class="header"><h1>GUSTO</h1><p>${date}</p><h2>PEDIDO #${order.id}</h2></div>
+          <div class="header"><h1>AMERICAN PIZZA</h1><p>${date}</p><h2>PEDIDO #${order.id}</h2></div>
           <div class="big-type">${order.delivery_method === 'delivery' ? '🛵 DELIVERY' : '🏪 RETIRO'}</div>
           <div class="info">
             <p><strong>Cliente:</strong> ${order.customer_name}</p>
@@ -259,7 +285,17 @@ export default function AdminPage() {
   const handleDragStart = (e, order) => { setDraggedOrder(order); e.dataTransfer.effectAllowed = "move"; }
   const handleDragEnd = (e) => { setDraggedOrder(null); setIsDraggingOver(null) }
   const handleDragOver = (e, colId) => { e.preventDefault(); if (isDraggingOver !== colId) setIsDraggingOver(colId) }
-  const handleDrop = async (e, newStatus) => { e.preventDefault(); setIsDraggingOver(null); if (!draggedOrder || draggedOrder.status === newStatus) return; setOrders(prev => prev.map(o => o.id === draggedOrder.id ? { ...o, status: newStatus } : o)); const { error } = await supabase.from('orders').update({ status: newStatus }).eq('id', draggedOrder.id); if (error) { alert('Error al mover pedido'); fetchOrders() } }
+  
+  const handleStatusUpdate = async (orderId, newStatus) => {
+    setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
+    const { error } = await supabase.from('orders').update({ status: newStatus }).eq('id', orderId);
+    if (error) {
+        alert('Error al actualizar estado');
+        fetchOrders();
+    }
+  }
+
+  const handleDrop = async (e, newStatus) => { e.preventDefault(); setIsDraggingOver(null); if (!draggedOrder || draggedOrder.status === newStatus) return; handleStatusUpdate(draggedOrder.id, newStatus); }
 
   const handleLogin = async (e) => { 
     e.preventDefault(); 
@@ -305,6 +341,21 @@ export default function AdminPage() {
   const handleEditCoupon = (c) => { setCouponToEdit(c); setShowCouponModal(true) }
   const deleteCoupon = async (code) => { if(!confirm('¿Eliminar cupón?')) return; await supabase.from('coupons').delete().eq('code', code); fetchCoupons() }
   
+  const handleCreateWaiter = async () => {
+    const name = prompt('Nombre del Mozo:')
+    const pin = prompt('PIN de Acceso (4-6 números):')
+    if (name && pin) {
+        await supabase.from('waiters').insert([{ name, pin_code: pin }])
+        fetchWaiters()
+    }
+  }
+
+  const deleteWaiter = async (id) => {
+    if (!confirm('¿Eliminar mozo?')) return
+    await supabase.from('waiters').delete().eq('id', id)
+    fetchWaiters()
+  }
+  
   const deleteBanner = async (id, imageUrl) => { 
       if(!confirm('¿Eliminar banner?')) return; 
       if (imageUrl) {
@@ -323,6 +374,23 @@ export default function AdminPage() {
   }
   const toggleOfferActive = async (id, current) => { await supabase.from('special_offers').update({ is_active: !current }).eq('id', id); fetchOffers() }
 
+  // --- MESA ACTIONS ---
+  const handleCreateTable = (zoneId) => {
+    if (!zoneId) { alert('Debes tener al menos una zona.'); return; }
+    setCurrentZoneId(zoneId)
+    setShowTableFormModal(true)
+  }
+
+  const handleCreateZone = () => {
+    setShowZoneModal(true)
+  }
+
+  const handleTableClick = (table) => {
+    if (designMode) return // En modo diseño no abre sesión
+    setSelectedTable(table)
+    setShowSessionModal(true)
+  }
+
   if (!session) return <LoginScreen email={email} setEmail={setEmail} password={password} setPassword={setPassword} handleLogin={handleLogin} loading={loading} />
 
   const filteredProducts = products.filter(p => {
@@ -331,32 +399,72 @@ export default function AdminPage() {
     return matchesSearch && matchesCategory;
   });
 
-  const OrderCard = ({ order }) => (
+  const OrderCard = ({ order }) => {
+    const getNextStatus = (current) => {
+        if (current === 'pending') return { id: 'cooking', label: 'COCINA', icon: Utensils, color: 'red' };
+        if (current === 'cooking') return { id: 'delivery', label: 'CAMINO', icon: Truck, color: 'blue' };
+        if (current === 'delivery') return { id: 'completed', label: 'LISTO', icon: Check, color: 'green' };
+        return null;
+    }
+
+    const next = getNextStatus(order.status);
+
+    return (
       <div 
         draggable="true"
         onDragStart={(e) => handleDragStart(e, order)}
         onDragEnd={handleDragEnd}
-        className="bg-white/5 border border-white/10 rounded-xl p-3 shadow-sm hover:border-[#E31B23]/40 transition-all mb-3 flex flex-col gap-2 group cursor-grab active:cursor-grabbing hover:shadow-md hover:translate-y-[-2px] select-none relative"
+        className="bg-white/5 border border-white/10 rounded-xl p-2 sm:p-3 shadow-sm hover:border-[#E31B23]/40 transition-all mb-2 flex flex-col gap-1.5 group cursor-grab active:cursor-grabbing hover:shadow-md hover:translate-y-[-1px] select-none relative"
       >
-          <div className="flex justify-between items-start border-b border-white/10 pb-2 pointer-events-none">
-             <div className="flex items-center gap-2"><GripVertical size={16} className="text-white/30 transition-colors"/><div><span className="font-black text-white text-lg">#{order.id}</span><p className="text-xs text-white/70 font-bold uppercase truncate max-w-[120px]">{order.customer_name}</p></div></div>
-             <div className="flex flex-col items-end gap-1 pointer-events-auto"><button onClick={() => printOrder(order)} className="p-1.5 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white rounded transition mb-1"><Printer size={14} /></button><span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wide ${order.delivery_method === 'delivery' ? 'bg-[#E31B23] text-white' : 'bg-[#1A1A1A] text-white border border-white/20'}`}>{order.delivery_method === 'delivery' ? 'Delivery' : 'Retiro'}</span></div>
+          <div className="flex justify-between items-start border-b border-white/10 pb-1.5 pointer-events-none">
+             <div className="flex items-center gap-1.5"><GripVertical size={14} className="text-white/20 transition-colors"/><div><span className="font-black text-white text-base sm:text-lg leading-none">#{order.id}</span><p className="text-[10px] text-white/60 font-bold uppercase truncate max-w-[80px] sm:max-w-[120px] mt-0.5">{order.customer_name}</p></div></div>
+             <div className="flex flex-col items-end gap-1 pointer-events-auto">
+                <div className="flex gap-1 mb-1">
+                    <button onClick={() => printOrder(order)} className="p-1.5 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white rounded transition border border-white/5"><Printer size={14} /></button>
+                    {next && (
+                        <button 
+                            onClick={() => handleStatusUpdate(order.id, next.id)}
+                            className={`p-1.5 rounded transition flex items-center gap-1 font-bold text-[9px] uppercase tracking-tighter shadow-lg border border-white/10 animate-in fade-in zoom-in duration-300
+                                ${next.id === 'cooking' ? 'bg-red-600 hover:bg-red-500 text-white' : 
+                                  next.id === 'delivery' ? 'bg-blue-600 hover:bg-blue-500 text-white' : 
+                                  'bg-green-600 hover:bg-green-500 text-white'}`}
+                        >
+                            {next.label} <ChevronRight size={12}/>
+                        </button>
+                    )}
+                </div>
+                <span className={`text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded font-bold uppercase tracking-wide flex items-center gap-1
+                    ${order.delivery_method === 'delivery' ? 'bg-[#E31B23] text-white' : 
+                      order.delivery_method === 'mesa' ? 'bg-purple-600 text-white' : 
+                      'bg-black text-white border border-white/20'}`}>
+                    {order.delivery_method === 'delivery' ? <Truck size={10}/> : order.delivery_method === 'mesa' ? <Coffee size={10}/> : <ShoppingBag size={10}/>}
+                    {order.delivery_method === 'mesa' ? `MESA ${order.table_label || 'S/N'}` : order.delivery_method === 'delivery' ? 'DELIVERY' : 'RETIRO'}
+                </span>
+             </div>
           </div>
-          <div className="space-y-2 py-1 pointer-events-none">{order.order_items.map(item => (<div key={item.id} className="text-sm leading-tight"><div className="flex gap-2"><span className="text-[#E31B23] font-bold">{item.quantity}x</span> <span className="text-white/90">{item.product_name}</span></div>{item.options && <p className="text-[10px] text-white/50 ml-6 line-clamp-1">+ {item.options}</p>}{item.note && <p className="text-[10px] text-yellow-500 ml-6 italic bg-yellow-400/10 px-1.5 py-0.5 rounded inline-block mt-0.5 border border-yellow-400/20">📝 {item.note}</p>}</div>))}</div>
-          <div className="pt-2 mt-auto border-t border-white/10 pointer-events-none"><div className="flex justify-between items-center mb-2"><span className="text-xs text-white/50 font-medium flex items-center gap-1 uppercase">{order.payment_method === 'mercadopago' ? <CreditCard size={12} className="text-sky-400"/> : <Wallet size={12} className="text-green-500"/>}{order.payment_method || 'Efectivo'}</span><span className="text-lg font-black text-white">${order.total}</span></div>{order.delivery_method === 'delivery' && (<div className="text-[10px] text-white/60 mb-2 flex items-start gap-1 bg-black/40 p-1.5 rounded"><MapPin size={10} className="mt-0.5 text-[#E31B23]"/> <span className="line-clamp-2">{order.customer_address}</span></div>)}</div>
+          <div className="space-y-1.5 py-1 pointer-events-none">{order.order_items.map(item => (<div key={item.id} className="text-[11px] sm:text-sm leading-tight"><div className="flex gap-2"><span className="text-[#E31B23] font-bold">{item.quantity}x</span> <span className="text-white/90 truncate">{item.product_name}</span></div>{item.options && <p className="text-[9px] text-white/40 ml-5 line-clamp-1">+ {item.options}</p>}{item.note && <p className="text-[9px] text-yellow-500 ml-5 italic bg-yellow-400/5 px-1.5 py-0.5 rounded inline-block mt-0.5 border border-yellow-400/10 truncate">📝 {item.note}</p>}</div>))}</div>
+          <div className="pt-1.5 mt-auto border-t border-white/10 pointer-events-none"><div className="flex justify-between items-center mb-1.5 text-xs sm:text-sm uppercase tracking-tight"><span className="text-[9px] text-white/40 font-medium flex items-center gap-1">{order.payment_method === 'mercadopago' ? <CreditCard size={10} className="text-sky-400"/> : <Wallet size={10} className="text-green-500"/>}{order.payment_method || 'EFECTIVO'}</span><span className="font-black text-white">${order.total}</span></div>{order.delivery_method === 'delivery' && (<div className="text-[9px] text-white/40 flex items-start gap-1 bg-black/40 p-1 rounded"><MapPin size={9} className="mt-0.5 text-[#E31B23] shrink-0"/> <span className="line-clamp-1">{order.customer_address}</span></div>)}</div>
       </div>
-  )
+    )
+  }
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] font-sans text-white flex flex-col h-screen overflow-hidden">
+      <style dangerouslySetInnerHTML={{ __html: `
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .mask-fade-right {
+          -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+          mask-image: linear-gradient(to right, black 85%, transparent 100%);
+        }
+      `}} />
       
       {/* NAVBAR */}
-      <nav className="bg-[#1A1A1A] border-b border-white/10 p-4 shrink-0 flex justify-between items-center z-40 shadow-sm">
-        <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="Gusto Admin" className="h-16 w-auto hidden sm:block object-contain" />
-          <img src="/logo.png" alt="GA" className="h-12 w-auto sm:hidden object-contain" />
+      <nav className="bg-[#1A1A1A] border-b border-white/10 p-2 sm:p-4 shrink-0 flex justify-between items-center z-40 shadow-sm overflow-hidden">
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          <img src="/logo.png" alt="American Pizza Admin" className="h-8 sm:h-16 w-auto object-contain" />
         </div>
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-1.5 sm:gap-4 overflow-hidden">
           <audio id="order-alert-sound" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_3d1da9ac74.mp3?filename=cash-register-kaching-93513.mp3" preload="auto"></audio>
           
           <button onClick={() => {
@@ -373,32 +481,35 @@ export default function AdminPage() {
               } else {
                  setSoundEnabled(false);
               }
-          }} className={`flex items-center gap-1 sm:gap-2 px-4 py-2 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${soundEnabled ? 'bg-green-600' : 'bg-[#E31B23] animate-pulse'}`}>
-             {soundEnabled ? '🔔 ON' : '🔕 OFF'}
+          }} className={`p-2 rounded-full transition-all shrink-0 ${soundEnabled ? 'bg-green-600/20 text-green-500' : 'bg-[#E31B23]/20 text-[#E31B23] animate-pulse'}`}>
+             {soundEnabled ? <Megaphone size={16}/> : <Megaphone size={16} className="opacity-40"/>}
           </button>
-
-          <button onClick={toggleStoreStatus} disabled={updatingStore} className={`flex items-center gap-1 sm:gap-2 px-4 py-2 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${storeOpen ? 'bg-green-600' : 'bg-[#E31B23]'}`}>{storeOpen ? <Unlock size={14}/> : <Lock size={14}/>} <span className="hidden sm:inline">{storeOpen ? 'ABIERTO' : 'CERRADO'}</span></button>
-          
-          <div className="flex bg-white/5 rounded-lg p-1">
+          <div className="flex bg-white/5 rounded-lg p-1 overflow-x-auto no-scrollbar mask-fade-right max-w-[180px] sm:max-w-none">
              {[
                {id:'orders',icon:ShoppingBag},
+               {id:'tables',icon:Coffee},
                {id:'menu',icon:Utensils},
                {id:'extras',icon:Layers},
                {id:'coupons',icon:Ticket},
                {id:'promos',icon:Megaphone},
                {id:'metrics',icon:TrendingUp},
                {id:'settings',icon:Settings}
-             ].map(t => (<button key={t.id} onClick={() => setActiveTab(t.id)} className={`p-2 rounded transition ${activeTab === t.id ? 'bg-[#E31B23] text-white' : 'text-white/70 hover:text-white'}`}><t.icon size={18}/></button>))}
+             ].map(t => (<button key={t.id} onClick={() => setActiveTab(t.id)} className={`p-2 rounded transition shrink-0 ${activeTab === t.id ? 'bg-[#E31B23] text-white shadow-lg' : 'text-white/40 hover:text-white'}`}><t.icon size={18}/></button>))}
           </div>
-          <button onClick={handleLogout} className="text-white/60 hover:text-[#E31B23]"><LogOut size={18}/></button>
+          
+          <button onClick={toggleStoreStatus} disabled={updatingStore} className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full font-black text-[10px] sm:text-xs uppercase tracking-widest transition-all shrink-0 ${storeOpen ? 'bg-green-600' : 'bg-[#E31B23]'}`}>
+            {storeOpen ? <Unlock size={12}/> : <Lock size={12}/>}
+            <span className="hidden sm:inline">{storeOpen ? 'ABIERTO' : 'CERRADO'}</span>
+          </button>
+          <button onClick={handleLogout} className="text-white/40 hover:text-[#E31B23] shrink-0 p-1.5 sm:p-2"><LogOut size={16}/></button>
         </div>
       </nav>
 
       <main className="flex-1 overflow-hidden relative">
         
         {activeTab === 'orders' && (
-          <div className="h-full p-4 overflow-x-auto">
-             <div className="flex gap-4 h-full min-w-[1000px] md:min-w-0">
+          <div className="h-full p-4 overflow-x-auto dash-scroll">
+             <div className="flex gap-4 h-full min-w-[1200px]">
                  {[{id:'pending',label:'PENDIENTES',color:'yellow',icon:Clock},{id:'cooking',label:'COCINA',color:'red',icon:Utensils},{id:'delivery',label:'EN CAMINO',color:'blue',icon:Truck},{id:'completed',label:'LISTOS',color:'green',icon:CheckCircle}].map(col => (
                      <div key={col.id} onDragOver={(e) => handleDragOver(e, col.id)} onDrop={(e) => handleDrop(e, col.id)} className={`flex-1 flex flex-col rounded-xl border-white/10 border h-full transition-colors duration-200 ${isDraggingOver === col.id ? 'bg-white/10' : 'bg-white/5'}`}>
                          <div className={`p-3 border-b border-white/10 rounded-t-xl flex justify-between items-center ${col.color==='yellow'?'text-yellow-500':col.color==='red'?'text-red-500':col.color==='blue'?'text-blue-400':'text-green-600'}`}>
@@ -411,6 +522,26 @@ export default function AdminPage() {
                  ))}
              </div>
           </div>
+        )}
+
+        {activeTab === 'tables' && (
+            <div className="h-full p-4 overflow-hidden dash-scroll">
+                {showManagementView ? (
+                    <AdminTableManagement onBack={() => setShowManagementView(false)} />
+                ) : (
+                    <AdminTableMap 
+                        zones={zones} 
+                        tables={tables} 
+                        onTableClick={handleTableClick}
+                        onCreateTable={handleCreateTable}
+                        onCreateZone={handleCreateZone}
+                        onRefresh={loadAllData}
+                        designMode={designMode}
+                        setDesignMode={setDesignMode}
+                        onShowManagement={() => setShowManagementView(true)}
+                    />
+                )}
+            </div>
         )}
 
         {activeTab === 'metrics' && <div className="h-full overflow-y-auto p-4"><DashboardMetrics /></div>}
@@ -468,6 +599,26 @@ export default function AdminPage() {
                         <div className="p-4 overflow-y-auto flex-1">{selectedGroupId ? <div className="space-y-2">{groupOptions.map(opt => (<div key={opt.id} className="flex gap-3 items-center bg-black p-3 rounded-xl border border-white/10"><input className="bg-transparent text-sm flex-1" defaultValue={opt.name} onBlur={(e) => updateOption(opt.id, 'name', e.target.value)} /><input className="bg-transparent text-sm w-16 text-right font-bold text-[#E31B23]" type="number" defaultValue={opt.price} onBlur={(e) => updateOption(opt.id, 'price', e.target.value)} /><button onClick={() => updateOption(opt.id, 'is_available', !opt.is_available)} className={`px-2 py-1 rounded text-[10px] font-bold ${opt.is_available ? 'text-green-500' : 'text-red-500'}`}>{opt.is_available ? 'STOCK' : 'OUT'}</button><button onClick={() => deleteOption(opt.id)} className="text-white/20 hover:text-red-500"><Trash2 size={16}/></button></div>))}</div> : <p className="text-center text-white/20 mt-20">Selecciona un grupo</p>}</div>
                     </div>
                 </div>
+
+                <div className="max-w-5xl mx-auto mt-8 bg-[#1A1A1A] rounded-xl border border-white/10 overflow-hidden">
+                    <div className="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+                        <h3 className="font-bold flex items-center gap-2"><User size={18}/> GESTIÓN DE MOZOS</h3>
+                        <button onClick={handleCreateWaiter} className="bg-blue-600 px-4 py-2 rounded font-bold text-xs">AGREGAR MOZO</button>
+                    </div>
+                    <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {waiters.map(w => (
+                            <div key={w.id} className="bg-black border border-white/10 p-4 rounded-xl flex justify-between items-center">
+                                <div>
+                                    <p className="font-black text-sm uppercase">{w.name}</p>
+                                    <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">PIN: {w.pin_code}</p>
+                                </div>
+                                <button onClick={() => deleteWaiter(w.id)} className="text-white/20 hover:text-red-500 transition-colors">
+                                    <X size={16}/>
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         )}
 
@@ -501,6 +652,20 @@ export default function AdminPage() {
                            <div className="space-y-2"><label className="text-xs font-bold text-white/50 uppercase">KM Base</label><input type="number" className="w-full bg-black border border-white/20 rounded-xl p-3" value={storeConfig.delivery_free_base_km || ''} onChange={e => setStoreConfig({...storeConfig, delivery_free_base_km: e.target.value})} /></div>
                            <div className="space-y-2"><label className="text-xs font-bold text-white/50 uppercase">Extra KM $</label><input type="number" className="w-full bg-black border border-white/20 rounded-xl p-3" value={storeConfig.delivery_price_per_extra_km || ''} onChange={e => setStoreConfig({...storeConfig, delivery_price_per_extra_km: e.target.value})} /></div>
                        </div>
+                       <div className="pt-6 border-t border-white/10">
+                           <Link href="/mozo" target="_blank" className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 hover:border-[#E31B23] transition-all group">
+                               <div className="flex items-center gap-4 text-white">
+                                   <div className="p-3 bg-black rounded-xl text-[#E31B23]">
+                                       <Smartphone size={24}/>
+                                   </div>
+                                   <div>
+                                       <p className="font-black text-sm uppercase tracking-tighter">APP DE MOZOS</p>
+                                       <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">Abrir terminal móvil para personal</p>
+                                   </div>
+                               </div>
+                               <ChevronRight size={20} className="text-white/20 group-hover:text-white group-hover:translate-x-1 transition-all"/>
+                           </Link>
+                       </div>
                    </div>
                </div>
            </div>
@@ -515,6 +680,30 @@ export default function AdminPage() {
       {showCouponModal && <AdminCouponForm couponToEdit={couponToEdit} onCancel={() => setShowCouponModal(false)} onSaved={() => { setShowCouponModal(false); fetchCoupons() }} />}
       {showBannerModal && <AdminBannerForm onCancel={() => setShowBannerModal(false)} onSaved={() => { setShowBannerModal(false); fetchBanners() }} />}
       {showOfferModal && <AdminOfferForm onCancel={() => setShowOfferModal(false)} onSaved={() => { setShowOfferModal(false); fetchOffers() }} />}
+      
+      {showSessionModal && (
+          <TableSessionModal 
+            table={selectedTable} 
+            products={products}
+            onClose={() => setShowSessionModal(false)}
+            onRefresh={() => { fetchTables(); fetchOrders(); }}
+          />
+      )}
+
+      {showZoneModal && (
+          <AdminZoneForm 
+            onClose={() => setShowZoneModal(false)} 
+            onRefresh={fetchZones} 
+          />
+      )}
+
+      {showTableFormModal && (
+          <AdminTableForm 
+            zoneId={currentZoneId}
+            onClose={() => setShowTableFormModal(false)} 
+            onRefresh={fetchTables} 
+          />
+      )}
 
     </div>
   )
@@ -525,7 +714,7 @@ function LoginScreen({ email, setEmail, password, setPassword, handleLogin, load
     <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-4">
       <div className="relative bg-[#1A1A1A] border border-white/10 p-8 pt-16 rounded-2xl w-full max-w-md shadow-xl">
         <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-[#0A0A0A] border border-white/10 rounded-full p-3 flex items-center justify-center shadow-2xl">
-            <img src="/logo.png" alt="Gusto" className="w-full h-full object-contain" />
+            <img src="/logo.png" alt="American Pizza" className="w-full h-full object-contain" />
         </div>
         <h1 className="text-lg font-black text-center mb-8 uppercase tracking-widest text-[#E31B23]">Acceso Admin</h1>
         <form onSubmit={handleLogin} className="space-y-5">

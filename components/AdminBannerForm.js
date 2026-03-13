@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import Image from 'next/image'
 import { supabase } from '../lib/supabase'
 import { Save, X, Loader2, Image as ImageIcon } from 'lucide-react'
 
@@ -84,7 +85,12 @@ export default function AdminBannerForm({ onCancel, onSaved }) {
             <label className="text-xs font-bold text-white/50 uppercase">Imagen del Banner</label>
             <div className="relative overflow-hidden bg-black border border-white/20 rounded-xl aspect-video flex items-center justify-center group cursor-pointer hover:border-[#E31B23]/40 transition">
               {imageUrl ? (
-                <img src={imageUrl} className="w-full h-full object-cover" alt="Preview banner" />
+                <Image 
+                    src={imageUrl} 
+                    fill 
+                    className="object-cover" 
+                    alt="Preview banner" 
+                />
               ) : (
                 <div className="text-white/40 flex flex-col items-center">
                   {uploading ? <Loader2 className="animate-spin mb-2" /> : <ImageIcon size={32} className="mb-2" />}

@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { supabase } from '../lib/supabase'
+import Image from 'next/image'
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 
 export default function PromoCarousel() {
@@ -119,11 +120,13 @@ export default function PromoCarousel() {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {banners.map((banner) => (
-            <div key={banner.id} className="min-w-full h-full relative bg-[#0A0A0A]">
-              <img
+            <div key={banner.id} className="min-w-full h-full relative bg-[#0A0A0A] overflow-hidden">
+              <Image
                 src={banner.image_url}
                 alt={banner.title || 'Promo'}
-                className="w-full h-full object-cover object-center opacity-90"
+                fill
+                priority={banners.indexOf(banner) === 0}
+                className="object-cover object-center opacity-90"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
                 {banner.title && (

@@ -37,7 +37,7 @@ function BentoCard({ children, className = "", delay = 0 }) {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-[32px] border border-white/5 p-8 transition-all duration-700 ease-out shadow-2xl ${bgColor} ${className}`}
+      className={`relative overflow-hidden rounded-[32px] border border-white/5 p-4 sm:p-8 transition-all duration-700 ease-out shadow-2xl ${bgColor} ${className}`}
       style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.98)' }}
     >
       {children}
@@ -205,7 +205,7 @@ export default function DashboardMetrics() {
     const element = document.getElementById('pdf-report-container');
     const opt = {
       margin:       0,
-      filename:     `Gusto_Analítica_${getLabelForPeriod().replace(/\s+/g, '_')}_${new Date().getTime()}.pdf`,
+      filename:     `American_Burger_Analitica_${getLabelForPeriod().replace(/\s+/g, '_')}_${new Date().getTime()}.pdf`,
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { scale: 2, useCORS: true, letterRendering: true, logging: false },
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -279,19 +279,21 @@ export default function DashboardMetrics() {
 
         {/* ── HEADER & CONTROLS ───────────────────────────────────── */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 no-print bg-[#1A1A1A] p-8 rounded-[32px] border border-white/10 shadow-2xl">
-          <div>
-            <h1 className="df text-7xl text-white leading-none tracking-tighter italic uppercase">Inteligencia</h1>
-            <p className="text-[10px] font-black text-[#E31B23] uppercase tracking-[0.4em] mt-2">American Pizza • Analytics Engine v4.0</p>
+          <div className="w-full lg:w-auto">
+            <h1 className="df text-5xl sm:text-7xl text-white leading-none tracking-tighter italic uppercase">Inteligencia</h1>
+            <p className="text-[9px] sm:text-[10px] font-black text-[#E31B23] uppercase tracking-[0.3em] mt-2">American Pizza • Analytics Engine v4.0</p>
           </div>
           
           <div className="flex flex-col items-end gap-4 w-full lg:w-auto">
-            <div className="flex bg-black border border-white/10 rounded-2xl p-1 w-full sm:w-auto overflow-x-auto dash-scroll">
-              {PRESET_FILTERS.map(f => (
-                <button key={f.key} onClick={() => setDateFilter(f.key)}
-                  className={`px-6 py-2.5 rounded-xl transition-all text-[11px] font-black uppercase tracking-widest whitespace-nowrap ${dateFilter === f.key ? 'bg-[#E31B23] text-white shadow-xl scale-105' : 'text-white/40 hover:text-white'}`}>
-                  {f.label}
-                </button>
-              ))}
+            <div className="flex bg-black border border-white/10 rounded-2xl p-1 w-full sm:w-auto overflow-x-auto no-scrollbar mask-fade-right">
+              <div className="flex gap-1">
+                {PRESET_FILTERS.map(f => (
+                  <button key={f.key} onClick={() => setDateFilter(f.key)}
+                    className={`px-4 sm:px-6 py-2 rounded-xl transition-all text-[10px] sm:text-[11px] font-black uppercase tracking-widest whitespace-nowrap ${dateFilter === f.key ? 'bg-[#E31B23] text-white shadow-xl scale-105' : 'text-white/40 hover:text-white'}`}>
+                    {f.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {dateFilter === 'custom' && (
@@ -302,8 +304,8 @@ export default function DashboardMetrics() {
               </div>
             )}
 
-            <button onClick={generatePDF} className="flex items-center justify-center gap-3 bg-white text-black px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-[#E31B23] hover:text-white transition-all shadow-2xl w-full lg:w-auto group">
-              <Printer size={18} className="group-hover:rotate-12 transition-transform" /> Exportar Reporte PDF
+            <button onClick={generatePDF} className="flex items-center justify-center gap-2 sm:gap-3 bg-white text-black px-4 sm:px-8 py-3 sm:py-4 rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-[0.1em] sm:tracking-[0.2em] hover:bg-[#E31B23] hover:text-white transition-all shadow-2xl w-full lg:w-auto group">
+              <Printer size={16} className="group-hover:rotate-12 transition-transform" /> EXPORTAR REPORTE PDF
             </button>
           </div>
         </div>
@@ -320,9 +322,9 @@ export default function DashboardMetrics() {
             <BentoCard className="md:col-span-8 bg-[#E31B23] text-white border-none shadow-[0_20px_50px_rgba(227,27,35,0.3)]" delay={0}>
               <div className="flex flex-col h-full justify-between">
                 <p className="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] italic">Recaudación Operativa Bruta</p>
-                <div className="mt-12 mb-8">
-                  <p className="df text-[10rem] md:text-[12rem] leading-[0.7] drop-shadow-2xl">{fmt(stats.kpi.totalRevenue)}</p>
-                  <p className="text-xl font-black text-white italic mt-6 tracking-tighter opacity-80">{fmtFull(stats.kpi.totalRevenue)} Procesados en {stats.kpi.totalOrders} Tickets</p>
+                <div className="mt-8 sm:mt-12 mb-6 sm:mb-8">
+                  <p className="df text-[6rem] sm:text-[10rem] md:text-[12rem] leading-[0.7] drop-shadow-2xl">{fmt(stats.kpi.totalRevenue)}</p>
+                  <p className="text-sm sm:text-xl font-black text-white italic mt-6 tracking-tighter opacity-80">{fmtFull(stats.kpi.totalRevenue)} Procesados en {stats.kpi.totalOrders} Tickets</p>
                 </div>
                 <div className="flex items-center justify-between border-t border-white/10 pt-8 mt-auto">
                   <div className="flex items-center gap-3">
@@ -370,7 +372,7 @@ export default function DashboardMetrics() {
                     <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mt-2 italic">Tráfico de ingresos por ventana horaria</p>
                   </div>
                </div>
-               <div className="h-72 mt-auto w-full">
+               <div className="h-48 sm:h-72 mt-auto w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={stats.hourlySales} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                       <defs>
@@ -387,8 +389,8 @@ export default function DashboardMetrics() {
             </BentoCard>
 
             <BentoCard className="md:col-span-4 bg-[#1A1A1A] border-white/5 shadow-2xl" delay={400}>
-              <h3 className="df text-4xl text-white leading-none mb-2 italic tracking-tighter uppercase">Tesorería</h3>
-              <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-6 italic">Eficacia de Recaudación</p>
+              <h3 className="df text-3xl sm:text-4xl text-white leading-none mb-1 sm:2 italic tracking-tighter uppercase">Tesorería</h3>
+              <p className="text-[9px] sm:text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-4 sm:mb-6 italic">Eficacia de Recaudación</p>
               
               <div className="h-40 relative flex justify-center items-center">
                  <ResponsiveContainer width="100%" height="100%">
@@ -449,8 +451,8 @@ export default function DashboardMetrics() {
             <BentoCard className="md:col-span-8 overflow-hidden flex flex-col bg-[#1A1A1A] border-white/5 shadow-2xl" delay={600}>
                <div className="flex justify-between items-center mb-8">
                   <div>
-                    <h3 className="df text-4xl text-white leading-none mb-2 italic tracking-tighter uppercase">Pódium Gastronómico</h3>
-                    <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] italic">Productos de mayor rotación</p>
+                    <h3 className="df text-3xl sm:text-4xl text-white leading-none mb-1 sm:2 italic tracking-tighter uppercase">Pódium Gastronómico</h3>
+                    <p className="text-[9px] sm:text-[10px] font-black text-white/30 uppercase tracking-[0.3em] italic">Productos de mayor rotación</p>
                   </div>
                   <div className="p-4 bg-[#E31B23]/10 rounded-2xl border border-[#E31B23]/20 shadow-xl shadow-[#E31B23]/10">
                     <Award className="text-[#E31B23] animate-pulse" size={32} />
@@ -476,11 +478,11 @@ export default function DashboardMetrics() {
             {/* ── BENTO WIDE: REGISTRO HISTORICO LIMITADO A 15 ──────────────── */}
             <BentoCard className="md:col-span-12 p-0 overflow-hidden bg-[#1A1A1A] border-white/5 shadow-2xl" delay={700}>
               <div className="p-8 bg-white text-black flex justify-between items-center shadow-2xl relative z-10">
-                <div>
-                  <h3 className="df text-4xl leading-none italic uppercase tracking-tighter">Registro de Auditoría</h3>
-                  <p className="text-[10px] font-black text-black/40 uppercase tracking-[0.4em] mt-2 italic">Back-Office Traceability Console v1.0</p>
+                <div className="w-full sm:w-auto">
+                    <h3 className="df text-2xl sm:text-4xl leading-none italic uppercase tracking-tighter">Auditoría</h3>
+                    <p className="text-[8px] sm:text-[10px] font-black text-black/40 uppercase tracking-[0.3em] mt-1 sm:mt-2 italic">Console v1.0</p>
                 </div>
-                <div className="bg-black text-white px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest italic">{stats.recentOrders.length} Eventos Cargados</div>
+                <div className="bg-black text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-xl text-[8px] sm:text-[10px] font-black uppercase tracking-widest italic">{stats.recentOrders.length} Eventos</div>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left bg-black/40">

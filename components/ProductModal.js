@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import { X, Check, PenLine } from 'lucide-react';
 
 // ✅ FIX: Helper para formatear precios sin decimales sucios.
@@ -129,9 +130,15 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
       <div className="bg-[#1A1A1A] w-full max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[95vh] sm:max-h-[90vh] border border-white/10 text-white">
 
         {/* Imagen Header */}
-        <div className="relative h-40 sm:h-56 bg-black shrink-0">
+        <div className="relative h-40 sm:h-56 bg-black shrink-0 overflow-hidden">
           {product.image_url ? (
-            <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+            <Image 
+                src={product.image_url} 
+                alt={product.name} 
+                fill 
+                priority
+                className="object-cover" 
+            />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-white/5 text-white/20">🍔</div>
           )}

@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { supabase } from '../../../lib/supabase'
 import { useParams } from 'next/navigation'
 import { Clock, Utensils, Truck, CheckCircle, Loader2, MapPin, Package, Receipt } from 'lucide-react'
@@ -81,8 +82,8 @@ export default function PedidoTrackingPage() {
     <div className="min-h-screen bg-[#0A0A0A] font-sans text-white/90 pb-12 selection:bg-[#E31B23] selection:text-white">
       {/* HEADER PREMIUM (Logo limpio sin fondo) */}
       <div className="pt-12 pb-6 pointer-events-none flex flex-col items-center justify-center">
-         <div className="w-32 mb-6 z-10 hover:scale-110 transition-transform duration-700">
-             <img src="/logo.png" alt="American Pizza" className="w-full h-full object-contain drop-shadow-2xl" />
+         <div className="w-32 mb-6 z-10 hover:scale-110 transition-transform duration-700 relative h-20">
+             <Image src="/logo.png" alt="American Pizza" fill className="object-contain drop-shadow-2xl" priority />
          </div>
          <div className="flex flex-col items-center">
              <span className="text-white/40 text-[10px] font-black tracking-[0.4em] uppercase mb-2">Trazabilidad en Vivo</span>
